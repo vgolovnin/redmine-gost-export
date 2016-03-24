@@ -1,0 +1,38 @@
+h1. Wiki
+
+GOSTOST
+
+[[ZOZ]]
+[[]]
+
+*bold*
+
+_italic_
+
+
++underline+
+
+-crossed-
+
+
+@code@
+
+h2. header2
+
+
+#  p1
+# p2
+
+
+
+* point 
+
+
+>cite
+>line
+
+
+!image!
+
+
+

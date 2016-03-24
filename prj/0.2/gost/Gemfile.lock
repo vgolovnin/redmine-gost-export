@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    RedCloth (4.2.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  RedCloth (>= 4.0)
+
+BUNDLED WITH
+   1.11.2

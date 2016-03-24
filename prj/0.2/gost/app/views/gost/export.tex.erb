@@ -1,0 +1,33 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{ucs}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{hyperref}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{setspace}
+\usepackage[normalem]{ulem}
+\usepackage{uspd}
+\bibliographystyle{ugost2008}
+
+\setdefaultlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Times}
+\newfontfamily\cyrillicfont{Times}
+\setmonofont{DejaVu Sans Mono}
+
+\begin{document}
+
+\sloppy
+
+<%= @document.latex_definitions.collect{|k,v| "#{k}{#{v.sub('|', '}{')}}"}.join("\n") %>
+
+\title{<%= @document.title %>}
+\abstracts{<%= @document.abstracts %>}
+
+\begin{uspd}{<%= @document.standard %>}
+<%= @document.latex %>
+\bibliography{<%= @document.bibliography %>}
+\end{uspd}
+\end{document}
