@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="Encoding" native2AsciiForPropertiesFiles="true">
-    <file url="file://$PROJECT_DIR$/docs/gost/desc.txt" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/prj/0.1/desc.txt" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/sandbox/desc.txt" charset="windows-1251" />
-    <file url="PROJECT" charset="windows-1251" />
-  </component>
-</project>
