@@ -54,9 +54,7 @@ module GostExportExtension
       end
     end
 
-    def quotations(text)
-      text.gsub! /\{\{cite\|(.*?)\}\}/, "<notextile>\\cite{\\1}</notextile>"
-    end
+I
 
     def remove_macros(text)
       text.gsub! /\{\{\w.*?\}\}/m , ''
