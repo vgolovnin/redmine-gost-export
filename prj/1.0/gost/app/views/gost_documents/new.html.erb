@@ -1,0 +1,15 @@
+HERE CREATe
+
+<%= form_for [@project, @document] do |f| %>
+
+<%= render partial: 'document_fields', locals: {f: f} %>
+
+
+<div style="clear:both;"></div>
+<div>
+      <%= f.submit %>
+</div>
+
+<% end %>
+
+

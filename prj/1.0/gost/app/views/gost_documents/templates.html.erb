@@ -1,0 +1,6 @@
+<!--<p><%= link_to 'Создать пустой документ', {action: 'new'} %></p>-->
+
+Создать на основе шаблона
+<% @templates.each_with_index  do |template, i| %>
+    <p><%= link_to template['name'], {action: 'new', template: i} %></p>
+<% end %>

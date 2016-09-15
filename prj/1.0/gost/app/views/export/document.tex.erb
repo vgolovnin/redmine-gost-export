@@ -1,0 +1,275 @@
+\begin{filecontents}{uspd.bib}
+<%= @bibs.map(&:to_s).join("\n") %>
+\end{filecontents}
+
+\begin{filecontents}{uspd.sty}
+\usepackage{rotating}
+\usepackage{ifthen}
+\hoffset=-5.4mm
+\voffset=-20.4mm
+\marginparwidth=0mm
+\marginparsep=0mm
+\marginparpush=0mm
+\evensidemargin=0mm
+\oddsidemargin=0mm
+\topmargin=0mm
+\headheight=15mm
+\headsep=5mm
+\textwidth=180mm
+\textheight=247mm
+\footskip=10mm
+\setlength{\unitlength}{1mm}
+
+\def\ps@uspd{
+  \def\@oddfoot{\vbox{\editboxm{\rightmark}}}
+  \def\@oddhead{
+    \vbox{
+    \vbox{\hfil\textnormal{\thepage}\hfil}
+    {\vskip 5mm}
+    \vbox{\hfil\textnormal{\rightmark~01-1}\hfil}
+  }
+ }
+}
+
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
+\newcommand\editboxm[1]{
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ & & & & \\
+\hline
+Изм. & Лист & № докум. & Подп. & Дата \\
+\hline
+ #1 & & & & \\
+\hline
+Инв. № подл. & Подп. и дата & Взам. инв. № & Инв. № дубл. & Подп. и дата \\
+\hline
+\end{tabular}
+}
+
+\newcommand\editbox[1]{{
+\newpage
+\noindent\begin{picture}(0,0)(0,0)
+\put(-12,-252){\framebox(12,145)}
+\put(-7,-252){\line(0,1){145}}
+\put(-12,-142){\line(1,0){12}}
+\put(-12,-167){\line(1,0){12}}
+\put(-12,-192){\line(1,0){12}}
+\put(-12,-227){\line(1,0){12}}
+\put(-11,-251){\begin{sideways}\parbox[t]{23mm}{\small Инв. {№} подп.}\end{sideways}}
+\put(-11,-226){\begin{sideways}\parbox[t]{33mm}{\small Подп. и дата}\end{sideways}}
+\put(-11,-191){\begin{sideways}\parbox[t]{23mm}{\small Взам инв. {№}}\end{sideways}}
+\put(-11,-166){\begin{sideways}\parbox[t]{23mm}{\small Инв. {№} дубл.}\end{sideways}}
+\put(-11,-141){\begin{sideways}\parbox[t]{33mm}{\small Подп. и дата}\end{sideways}}
+\end{picture}
+#1
+\newpage
+}}
+
+\newcommand\pagesfield[1]{\ifthenelse{\pageref{#1} > 1}{Листов \pageref{#1}}{}}
+
+\def\vhrulefill#1{\makebox[#1][l]{\leavevmode\leaders\hrule\@height0.5pt\hfill \kern\z@}}
+
+\newcommand{\signature}[3]{%
+\parbox{0.4\textwidth}{%
+\begin{center}
+#1
+\par
+#2
+\par
+\vhrulefill{7em}~#3
+\par
+«\vhrulefill{2em}»~\vhrulefill{5em}~{\number\year}~г.
+\end{center}
+}}
+
+\newcommand\UspdApprovalPage[1]{\thispagestyle{empty}\editbox{
+
+\begin{center}
+\textbf{\@organization} \\
+\@organizationunit \\
+
+
+\@agreed
+\@approved
+
+\vskip 20mm
+
+\makeatletter
+\@project
+\vskip 1em
+\@title
+\makeatother
+
+\vskip 7mm
+
+{\large ЛИСТ УТВЕРЖДЕНИЯ}
+
+\vskip 10mm
+
+{{#1} 01-1-ЛУ}
+
+\pagesfield{endlu}
+
+\vskip 10mm
+
+\begin{flushright}
+\@performer
+\end{flushright}
+
+\vfill
+{{\number\year}}
+\end{center}
+\label{endlu}
+}
+
+\newcommand\UspdTitlePage[1]{{\setcounter{page}{1}\thispagestyle{empty}\editbox{
+
+{УТВЕРЖДЕНО}
+
+{{#1} 01-1-ЛУ}
+
+\vskip 10mm
+
+\vskip 20mm
+
+\begin{center}
+
+\@project
+\vskip 1em
+\@title
+\end{center}
+
+\vskip 20mm
+
+\begin{center}
+{{#1}}
+\end{center}
+\begin{center}
+\pagesfield{enddoc}
+\end{center}
+\vfill
+\begin{center}
+{{\number\year}}
+\end{center}
+}}
+}
+\renewcommand{\rightmark}{\normalfont{#1}}
+\pagestyle{uspd}
+\newpage
+}
+
+\newcommand\UspdChangesList{{
+\newpage
+\thispagestyle{empty}
+\noindent\begin{picture}(185,247)(0,0)
+\put(0,0){\line(0,1){247}}
+\put(8,0){\line(0,1){232}}
+\put(28,0){\line(0,1){232}}
+\put(48,0){\line(0,1){232}}
+\put(68,0){\line(0,1){232}}
+\put(88,0){\line(0,1){237}}
+\put(108,0){\line(0,1){237}}
+\put(133,0){\line(0,1){237}}
+\put(158,0){\line(0,1){237}}
+\put(173,0){\line(0,1){237}}
+\put(185,0){\line(0,1){247}}
+\put(0,247){\line(1,0){185}}
+\put(0,237){\line(1,0){185}}
+\put(0,232){\line(1,0){88}}
+\put(0,212){\line(1,0){185}}
+\put(0,0){\line(1,0){185}}
+\multiput(0,207)(0,-5){41}{\line(1,0){185}}
+\put(0,237){\makebox[185mm][c]{\raisebox{2\depth}{\Large {Лист регистрации изменений}}}}
+\put(0,232){\makebox[88mm][c]{\raisebox{1.5\depth}{\small Номера листов (страниц)}}}
+\put(0.5,227){\parbox[t]{7mm}{\small Изм}}
+\put(9,227){\parbox[t]{18mm}{\small из\-ме\-нён\-ных}}
+\put(29,227){\parbox[t]{18mm}{\small за\-ме\-нён\-ных}}
+\put(49,227){\parbox[t]{18mm}{\small но\-вых}}
+\put(69,227){\parbox[t]{18mm}{\small ан\-ну\-ли\-ро\-ван\-ных}}
+\put(89,232){\parbox[t]{18mm}{\small Всего листов (страниц) в докум}}
+\put(109,232){\parbox[t]{23mm}{\small {№} документа}}
+\put(134,232){\parbox[t]{23mm}{\small Входящий {№} сопроводительного докум и дата}}
+\put(159,232){\parbox[t]{13mm}{\small Подп}}
+\put(174,232){\parbox[t]{10mm}{\small Дата}}
+\label{enddoc}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+\end{picture}
+\newpage
+}}
+
+\makeatletter
+\newcommand\agreed[2]{\def\@agreed{\signature{СОГЛАСОВАНО}{#1}{#2}}}
+\newcommand\approved[2]{\def\@approved{\signature{УТВЕРЖДАЮ}{#1}{#2}}}
+\newcommand\performer[2]{\def\@performer{\signature{Исполнитель}{#1}{#2}}}
+
+\newcommand\abstracts[1]{\def\@abstracts{#1}}
+\newcommand{\project}[1]{\def\@project{#1}}
+\newcommand{\organization}[1]{\def\@organization{#1}}
+\newcommand{\organizationunit}[1]{\def\@organizationunit{#1}}
+\newenvironment{uspd}[1]{\sloppy\UspdApprovalPage{#1}\UspdTitlePage{#1}
+<% if @document.has_annotation %>
+\section*{Аннотация}{\@abstracts}
+<% end %>
+\newpage\tableofcontents\newpage}{<% if @document.has_changeslist %>\UspdChangesList<% end %>}
+\makeatother
+\end{filecontents}
+
+\documentclass[a4paper,12pt]{article}
+\usepackage{ucs}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{hyperref}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{setspace}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage[section, numbib, numindex]{tocbibind}
+\usepackage{uspd}
+
+\bibliographystyle{ugost2008}
+
+\setdefaultlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Times}
+\newfontfamily\cyrillicfont{Times}
+\setmonofont{DejaVu Sans Mono}
+
+\lstset{inputencoding=utf8,
+ basicstyle=\footnotesize,
+ extendedchars=\true}
+
+\begin{document}
+
+\sloppy
+
+<%# @document.latex_definitions.collect{|k,v| "#{k}{#{v.sub('|', '}{')}}"}.join("\n") %>
+
+\project{<%= latex @info.title %>}
+\organization{<%= latex @info.organization %>}
+\organizationunit{<%= latex @info.organization_unit %>}
+
+<%
+agreed = @info.signers.agreed
+approved = @info.signers.approved
+performer = @info.signers.performer
+%>
+\agreed{<%= latex agreed.position %>}{<%= latex agreed.name %>}
+\approved{<%= latex approved.position %>}{<%= latex approved.name %>}
+\performer{<%= latex performer.position %>}{<%= latex performer.name %>}
+
+\title{<%= @document.title %>}
+<% if @document.has_annotation %>
+\abstracts{<%= latex(render partial: 'gost_document/annotation') %>}
+<% end %>
+
+\begin{uspd}{<%= latex "#{@info.country_code}.#{@info.organization_code}.#{@info.okp_code}-01 #{@document.document_code}" %>}
+<%= render partial: 'export/sections', locals: {sections: @document.sections, level: 1} %>
+
+\bibliography{uspd}
+\end{uspd}
+\end{document}

@@ -1,0 +1,9 @@
+<%= form_for @bib, url: {action: 'create'} do |f| %>
+  new  Bibtex entry
+
+    <p>
+      <%= f.text_area :text %>
+    </p>
+
+    <%= f.submit %>
+<% end %>

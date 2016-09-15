@@ -1,0 +1,17 @@
+<div>
+<div><%= link_to 'Редактировать информацию о проекте', edit_project_gost_info_path %>
+  <%= link_to 'Библиография', project_bibliography_index_path %></div>
+
+
+<% @documents.each do |document|  %>
+<p><%= link_to document.title, project_gost_document_path(@project, document) %>
+  <%= link_to '[Edit]',  edit_project_gost_document_path(@project, document) %>
+  <%= link_to '[Export]',  export_project_gost_document_path(@project, document) %>
+  <%= link_to '[X]', [@project, document], method: 'delete', data: {confirm: 'sure?'} %>
+</p>
+<% end %>
+</div>
+
+
+
+<%= link_to  'New document', action: 'new' %>

@@ -1,0 +1,39 @@
+
+<div class="gost_section">
+  <p><%= f.hidden_field :index %></p>
+
+  <p>
+    <%= raw "<h#{depth} class='section_title'>#{f.object.title}
+    <a href='#' class='section_edit_link'>#{image_tag('edit.png')}</a></h#{depth}>" %>
+    <br>
+    <%= f.text_field :title, size: 64, style: "display: none" %>
+  </p>
+
+<div class="gost_section_contents">
+
+<%= f.hidden_field :description %>
+<p>
+  <%= f.text_area :text, cols: '128', rows: '15', class: 'jsToolBar' %>
+</p>
+
+<div class="gost_section_subsections">
+<% if f.object.sections.size > 0 %>
+    <%= f.fields_for :sections, f.object.sections do |subsection_form| %>
+        <%= render partial: 'gost_documents/section', locals: {f: subsection_form, depth: depth+1} %>
+    <% end %>
+<% end %>
+</div>
+</div>
+
+  <% if defined? f.object.tips %>
+      <div class="gost_section_tips"><%= f.object.tips %></div>
+  <% else %>
+      <div class="gost_section_tips">tips here</div>
+  <% end %>
+
+  <style>
+    .gost_section {clear: both;}
+    .gost_section_contents {float: left; width: 60%;}
+    .gost_section_tips {float: left; width: 40%;}
+  </style>
+</div>

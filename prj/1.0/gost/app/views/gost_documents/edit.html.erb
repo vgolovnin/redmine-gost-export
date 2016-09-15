@@ -1,0 +1,12 @@
+
+<div>
+<%= form_for @document, url: {action: 'update'} do |f| %>
+
+    <%= render partial: 'document_fields', locals: {f: f} %>
+
+    <div style="clear: left;">
+      <%= f.submit %>
+    </div>
+
+<% end %>
+</div>

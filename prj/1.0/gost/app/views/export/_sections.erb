@@ -1,0 +1,4 @@
+<% sections.each do |section| %>
+<%= render partial: 'export/section', locals: {section: section, level: level} %>
+    <%= render partial: 'export/sections', locals: {sections: section.sections, level: level+1} %>
+<% end %>

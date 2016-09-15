@@ -1,0 +1,17 @@
+<%=raw "<h#{level}>#{theindex}#{index}. #{section.title}" %>
+<%= link_to image_tag('edit.png'), edit_project_gost_document_section_path(@project, @document, section) %>
+ <%=raw "</h#{level}>"%>
+
+
+<% if section.helper.nil? %>
+<div>
+  <%= section.description %>
+</div>
+
+<% section.sections.each_with_index  do |subsection, index| %>
+    <%= render partial: 'show_section', locals: {section: subsection, index: index+1, theindex: theindex + "#{index+1}.", level: level+1} %>
+<% end %>
+
+<% else %>
+    <%= send(section.helper) %>
+<% end %>
