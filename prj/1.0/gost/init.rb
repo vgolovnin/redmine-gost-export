@@ -16,7 +16,7 @@ Redmine::Plugin.register :gost do
         gost_bibliography: [:new, :create, :destroy]
     }
   end
-  menu :project_menu, :gost, {controller: 'gost_documents', action: 'index'}, caption: 'Документация ГОСТ', param: :project_id
+  menu :project_menu, :gost_documents, {controller: 'gost_documents', action: 'index'}, caption: 'Документация ГОСТ', param: :project_id
 
   module ProjectGostPatch
     def self.included(base)

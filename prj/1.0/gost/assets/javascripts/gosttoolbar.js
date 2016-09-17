@@ -180,16 +180,32 @@ jsToolBar.prototype.elements.cite = {
         wiki: function() {
             wiki = this;
             $.get('../../../../bibliography.json', function(bibs){
-                $('#bibliography').html(bibs.map(function(bib){
+                $('#ajax-modal').html(bibs.map(function(bib){
                     return '<div>[<a href="#">' + bib.id + '</a>] ' + bib.title + '</div>';
                 }).join(''));
 
-                $("#bibliography > div a").on('click', function(){
-                   wiki.encloseSelection('{{cite(' + $(this).text() + ')}}');
+                $("#ajax-modal > div a").on('click', function(){
+                    wiki.encloseSelection('{{cite(' + $(this).text() + ')}}');
                     hideModal(this);
                     return false;
                 });
-                showModal('bibliography', 450, 'Библиография');
+                showModal('ajax-modal', 450, 'Библиография');
+            })
+
+        }
+    }
+}
+
+
+jsToolBar.prototype.elements.section_duplicate = {
+    type: 'button',
+    title: 'Section Duplicate',
+    fn: {
+        wiki: function() {
+            wiki = this;
+            $.get('duplicate/new', function(duplicate_form){
+                $('#ajax-modal').html(duplicate_form);
+                showModal('ajax-modal', 450, 'Связать с разделом');
             })
 
         }

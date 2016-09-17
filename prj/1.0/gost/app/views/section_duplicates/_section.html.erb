@@ -1,0 +1,7 @@
+<% level.times { %>-<% } %>
+<%= link_to section.title, project_gost_document_section_duplicate_path(@project, @document,
+                                                                   @duplicate, origin_id: section.id), method: :post %><br/>
+<% unless section.sections.nil? %>
+  <%= render partial: 'sections', locals: {sections: section.sections, level: level+1 } %>
+<% end %>
+

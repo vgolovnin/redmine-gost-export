@@ -6,6 +6,11 @@ class Section < ActiveRecord::Base
   accepts_nested_attributes_for :sections, allow_destroy: true
 
   has_one :helper, class_name: 'GostHelper', dependent: :destroy
+  has_many :duplicates, class_name: 'Section', foreign_key: 'origin_id'
+  belongs_to :origin, class_name: 'Section'
+
+  after_find :set_duplicate
+  before_save :set_origin
 
   default_scope { order(index: :asc) }
 
@@ -21,7 +26,6 @@ class Section < ActiveRecord::Base
     self
   end
 
-
   def self.load_sections(template)
     if template.nil? or template.empty?
       return []
@@ -31,6 +35,22 @@ class Section < ActiveRecord::Base
       sections.push(Section.new.use_template(section, index))
     end
     sections
+  end
+
+  private
+
+  def set_duplicate
+    if self.origin
+      self.text = self.origin.text
+      self.save
+    end
+  end
+
+  def set_origin
+    if self.origin
+      self.origin.text = self.text
+      self.origin.save
+    end
   end
 
 end

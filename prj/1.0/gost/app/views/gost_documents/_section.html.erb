@@ -1,4 +1,3 @@
-
 <div class="gost_section">
   <p><%= f.hidden_field :index %></p>
 
@@ -19,7 +18,6 @@
 </p>
 <% else %>
       <%= render partial: "gost_helpers/#{f.object.helper.name}_settings", locals: {settings: f.object.helper.settings} %>
-
 <% end %>
 
 <div class="gost_section_subsections">

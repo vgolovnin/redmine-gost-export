@@ -1,10 +1,13 @@
-<div>
-<div><%= link_to 'Редактировать информацию о проекте', edit_project_gost_info_path %>
-  <%= link_to 'Библиография', project_bibliography_index_path %></div>
+<div class="contextual">
+  <%= link_to 'Создать', new_project_gost_document_path, remote: true, class: "icon icon-add" %>
+</div>
 
+<div>
+
+<h3>Документация</h3>
 
 <% @documents.each do |document|  %>
-<p><%= link_to document.title, project_gost_document_path(@project, document) %>
+<p><h4><%= link_to document.title, project_gost_document_path(@project, document) %></h4>
   <%= link_to '[Edit]',  edit_project_gost_document_path(@project, document) %>
   <%= link_to '[Export]',  export_project_gost_document_path(@project, document) %>
   <%= link_to '[X]', [@project, document], method: 'delete', data: {confirm: 'sure?'} %>
@@ -14,4 +17,8 @@
 
 
 
-<%= link_to  'New document', action: 'new' %>
+
+
+<% content_for :sidebar do %>
+  <% render partial: 'sidebar' %>
+<% end %>

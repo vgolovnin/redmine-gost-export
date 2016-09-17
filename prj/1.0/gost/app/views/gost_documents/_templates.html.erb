@@ -1,0 +1,3 @@
+<% @templates.each_with_index  do |template, i| %>
+    <p><%= link_to template['name'], project_gost_documents_path(@project, template: i), method: 'post' %></p>
+<% end %>

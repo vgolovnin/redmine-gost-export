@@ -1,0 +1,8 @@
+<% @documents.each do |document| %>
+    <div class="document">
+      [<%= link_to_function document.title, "$(this).siblings('.sections').toggle()" %>]<br/>
+      <div class="sections" style="display: none">
+        <%= render partial: 'sections', locals: {sections: document.sections, level: 0} %>
+      </div>
+    </div>
+<% end %>

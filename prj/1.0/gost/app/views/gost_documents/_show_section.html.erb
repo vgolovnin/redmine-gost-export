@@ -5,7 +5,7 @@
 
 <% if section.helper.nil? %>
 <div>
-  <%= section.description %>
+  <%= section.text%>
 </div>
 
 <% section.sections.each_with_index  do |subsection, index| %>
@@ -13,5 +13,5 @@
 <% end %>
 
 <% else %>
-    <%= render partial: "gost_helpers/#{section.helper}", locals: {section: section} %>
+    <%= render partial: "gost_helpers/#{section.helper.name}", locals: {section: section} %>
 <% end %>

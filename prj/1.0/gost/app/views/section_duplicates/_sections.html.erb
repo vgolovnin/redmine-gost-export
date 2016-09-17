@@ -1,0 +1,3 @@
+<% sections.each do |subsection| %>
+      <%= render partial: 'section', locals: {section: subsection, level: level+1 } %>
+<% end %>

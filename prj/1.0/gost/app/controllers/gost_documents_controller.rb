@@ -6,20 +6,20 @@ class GostDocumentsController < GostPluginController
 
   def new
     @templates = templates
-    if params[:template].present?
-      template_index = params[:template].to_i
-      render_404 if template_index >= @templates.size || template_index < 0
-      @document = @project.gost_documents.build.use_template(@templates[template_index])
-      @document.save #fixme -> create
-      redirect_to [@project, @document]
-    else
-      render 'templates'
+    respond_to do |format|
+      format.js
     end
   end
 
   def create
-    @document = @project.gost_documents.create(params.require(:gost_document).permit!) #fixme params
-    redirect_to [@project, @document], action: :edit
+    @templates = templates
+    if params[:template].present?
+      template_index = params[:template].to_i
+      render_404 if template_index >= @templates.size || template_index < 0
+      @document = @project.gost_documents.build.use_template(@templates[template_index])
+      @document.save
+      redirect_to [@project, @document]
+    end
   end
 
   def show
