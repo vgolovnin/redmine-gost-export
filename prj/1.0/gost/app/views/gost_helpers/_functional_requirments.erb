@@ -1,0 +1,10 @@
+<% if section.helper %>
+  <% IssueCategory.find(section.helper.settings[:issue_category_ids]).map{|c| c.issues}
+          .flatten.each do |issue| %>
+<p>
+        <%= issue.subject %>
+</p>
+    <% end %>
+<% else %>
+Set helper settings first
+<% end %>
