@@ -1,0 +1,8 @@
+<% if settings[:issue_category_ids] %>
+    <% IssueCategory.find(settings[:issue_category_ids]).map{|c| c.issues}
+           .flatten.each do |issue| %>
+        #  <%= issue.subject %>
+    <% end %>
+<% else %>
+Категории задач не выбраны
+<% end %>

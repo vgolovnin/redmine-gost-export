@@ -13,5 +13,5 @@
 <% end %>
 
 <% else %>
-    <%= send(section.helper) %>
+    <%= render partial: "gost_helpers/#{section.helper}", locals: {section: section} %>
 <% end %>

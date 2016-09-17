@@ -5,13 +5,17 @@ class Section < ActiveRecord::Base
   has_many :sections, as: :parent, dependent: :destroy
   accepts_nested_attributes_for :sections, allow_destroy: true
 
+  has_one :helper, class_name: 'GostHelper', dependent: :destroy
+
   default_scope { order(index: :asc) }
 
   def use_template(template, index)
     self.title = template['name']
     self.index = index
     self.description = template['description']
-    self.helper = template['helper']
+    if template['helper']
+      self.create_helper(name: template['helper'])
+    end
     self.tips = template['tips'] unless template['tips'].nil?
     self.sections = Section.load_sections(template['sections'])
     self
