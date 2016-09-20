@@ -103,6 +103,7 @@ class LatexBuild
    end
 
    def build(document)
+     @exc_error = []
      pwd = Dir.pwd
      directory = File.join(self.build_directory, document.title)
      FileUtils.mkdir_p directory
@@ -117,12 +118,16 @@ class LatexBuild
      File.write(File.join(directory, "#{name}.tex"),
                 @view.render(file: 'export/document.tex.erb'))
      Dir.chdir directory
-
+     begin
      f = IO.popen(self.binary + " " + self.options + " " + name)
      log << f.readlines.join
      f.close
 
+   rescue StandardError => e
+      @exc_error = e
+     ensure
      Dir.chdir pwd
+     end
      self.log = log
      File.join(directory, name + ".pdf")
    end
@@ -132,6 +137,7 @@ class LatexBuild
    end
 
    def errors(name)
+     [@exc_error] if @exc_error
      @errors = []
      File.readlines(File.join(self.build_directory, name, 'export.log')).each do |line|
        @errors << line if line.match(/(^!\s)|(\serror(\s|:))/i)

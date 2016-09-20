@@ -1,2 +1,3 @@
+<% raise StandardError.new("List too nested") if level > 4%>
 <% level.times do %>#<% end %> <%= issue.subject %>
 <% if issue.children.any? %><% issue.children.each do |subissue| %><%= render partial: 'export/issue', locals: {issue: subissue, level: level+1} %><% end %><% end %>
