@@ -1,17 +1,15 @@
-<% if section.helper %>
+<% if section.helper and section.helper.name == 'functional_requirments' %>
 
   <% if section.helper.settings.nil? %>
       Этот раздел генерируется автоматически
         <%= link_to image_tag('changeset.png'), edit_project_gost_document_section_path(@project, @document, section) %>
   <% else %>
-
   <% IssueCategory.find(section.helper.settings[:issue_category_ids]).map{|c| c.issues}
           .flatten.each do |issue| %>
 <p>
         <%= issue.subject %>
 </p>
     <% end %>
-
 <% end %>
 <% else %>
 Set helper settings first
