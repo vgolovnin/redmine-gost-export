@@ -1,7 +1,7 @@
 <% if settings[:issue_category_ids] %>
-    <% IssueCategory.find(settings[:issue_category_ids]).map{|c| c.issues}
+    <% IssueCategory.find(settings[:issue_category_ids]).map{|c| c.issues.where(parent: nil) }
            .flatten.each do |issue| %>
-        #  <%= issue.subject %>
+<%= render partial: 'export/issue', locals: {issue: issue, level: 1} %>
     <% end %>
 <% else %>
 Категории задач не выбраны

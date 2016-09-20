@@ -1,6 +1,7 @@
 class GostDocumentsController < GostPluginController
   menu_item :gost_documents
 
+  helper :attachments
   def index
     @documents = @project.gost_documents
   end

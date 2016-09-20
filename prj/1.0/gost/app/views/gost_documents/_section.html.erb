@@ -11,12 +11,11 @@
 <div class="gost_section_contents">
 
 
-<% if f.object.helper.nil? %>
 <%= f.hidden_field :description %>
 <p>
   <%= f.text_area :text, cols: '128', rows: '15', class: 'jsToolBar' %>
 </p>
-<% else %>
+<% unless f.object.helper.nil?  %>
       <%= render partial: "gost_helpers/#{f.object.helper.name}_settings", locals: {settings: f.object.helper.settings} %>
 <% end %>
   <div class="gost_section_attachments">
