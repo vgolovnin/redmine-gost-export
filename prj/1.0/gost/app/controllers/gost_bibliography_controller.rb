@@ -1,5 +1,6 @@
 class GostBibliographyController < GostPluginController
 
+  menu_item :gost_documents
   def index
     @bibs = GostBibliographicReference.get @project
 

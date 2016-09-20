@@ -1,5 +1,5 @@
 class GostInfoController < GostPluginController
-
+  menu_item :gost_documents
   def edit
     @info = @project.gost_info
     if @info.nil?

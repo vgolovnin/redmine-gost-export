@@ -1,3 +1,5 @@
+<h3>Библиография</h3>
+
 <% @bibs.each do |bib| %>
   <p>
     <% unless 0%>
@@ -10,3 +12,7 @@
 <% end %>
 
 <%= link_to '[+]', action: 'new' %>
+
+<% content_for :sidebar do %>
+    <% render partial: 'gost_plugin/sidebar' %>
+<% end %>

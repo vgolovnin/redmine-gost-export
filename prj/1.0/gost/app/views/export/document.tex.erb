@@ -224,10 +224,11 @@
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{setspace}
 \usepackage[normalem]{ulem}
-\usepackage{listings}
+%\usepackage{listings}
 \usepackage{multirow}
 \usepackage{float}
 \usepackage[section, numbib, numindex]{tocbibind}
+\usepackage{import}
 \usepackage{uspd}
 
 \bibliographystyle{ugost2008}
@@ -239,9 +240,13 @@
 \newfontfamily\cyrillicfont{Times}
 \setmonofont{DejaVu Sans Mono}
 
-\lstset{inputencoding=utf8,
- basicstyle=\footnotesize,
- extendedchars=\true}
+
+%\lstset{inputencoding=utf8,
+% extendedchars=\true
+% basicstyle=\ttfamily,
+% columns=fullflexible,
+% keepspaces=true,
+% }
 
 \begin{document}
 
@@ -268,7 +273,8 @@ performer = @info.signers.performer
 <% end %>
 
 \begin{uspd}{<%= latex "#{@info.country_code}.#{@info.organization_code}.#{@info.okp_code}-01 #{@document.document_code}" %>}
-<%= render partial: 'export/sections', locals: {sections: @document.sections, level: 1} %>
+
+<%= render partial: 'export/sections', locals: {sections: @document.sections, level: 1, pwd: @directory} %>
 
 \bibliography{uspd}
 \end{uspd}

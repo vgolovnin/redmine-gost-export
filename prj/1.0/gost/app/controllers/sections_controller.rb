@@ -1,4 +1,8 @@
 class SectionsController < GostPluginController
+  menu_item :gost_documents
+
+  helper :attachments
+
   def edit
     @document = @project.gost_documents.find(params[:gost_document_id])
     @section = @document.nested_section(params[:id])
@@ -10,6 +14,7 @@ class SectionsController < GostPluginController
 
     if @section.helper.nil?
       @section.update(params.require(:section).permit!)
+      Attachment.attach_files(@section, params[:attachments])
     else
       @section.helper.update(settings: helper_settings_list(@section.helper.name))
     end

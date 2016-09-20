@@ -1,6 +1,8 @@
 class Section < ActiveRecord::Base
 
   self.table_name = 'gost_sections'
+
+
   belongs_to :parent, polymorphic: true
   has_many :sections, as: :parent, dependent: :destroy
   accepts_nested_attributes_for :sections, allow_destroy: true
@@ -12,7 +14,25 @@ class Section < ActiveRecord::Base
   after_find :set_duplicate
   before_save :set_origin
 
+  acts_as_attachable view_permission: :gost_view,
+                     delete_permission: :gost_edit
+
+
   default_scope { order(index: :asc) }
+
+  def gost_document
+    @gost_document unless @gost_document.nil?
+
+    elem = self
+    while elem.class != GostDocument do
+      elem = elem.parent
+    end
+    @gost_document = elem
+  end
+
+  def project
+    @project ||= gost_document.project
+  end
 
   def use_template(template, index)
     self.title = template['name']

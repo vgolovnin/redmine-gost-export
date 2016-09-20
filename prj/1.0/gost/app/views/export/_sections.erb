@@ -1,4 +1,13 @@
 <% sections.each do |section| %>
-<%= render partial: 'export/section', locals: {section: section, level: level} %>
-    <%= render partial: 'export/sections', locals: {sections: section.sections, level: level+1} %>
+<%
+  dirname = "#{section.index}.#{section.title.gsub /\s/, '_'}"
+  dir = File.join(pwd, dirname)
+  Dir.mkdir dir
+  Dir.chdir dir
+%>
+<%= latex "h#{level}. #{section.title}", headers: true %>
+\subimport*{<%= "#{dirname}/" %>}{index}
+    <% tex = render partial: 'export/section', locals: {section: section, level: level, pwd: dir} %>
+    <% tex << (render partial: 'export/sections', locals: {sections: section.sections, level: level+1, pwd: dir}) %>
+    <% File.write(File.join(dir, 'index.tex'), tex) %>
 <% end %>

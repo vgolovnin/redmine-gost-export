@@ -13,7 +13,8 @@ Redmine::Plugin.register :gost do
     permission :gost_edit, {
         gost_documents: [:new, :create, :edit, :update, :destroy],
         gost_info: [:edit, :update],
-        gost_bibliography: [:new, :create, :destroy]
+        gost_bibliography: [:new, :create, :destroy],
+        sections: [:edit, :update]
     }
   end
   menu :project_menu, :gost_documents, {controller: 'gost_documents', action: 'index'}, caption: 'Документация ГОСТ', param: :project_id
@@ -23,6 +24,7 @@ Redmine::Plugin.register :gost do
       base.class_eval do
         unloadable
         has_one :gost_info
+        has_many :macros, class_name: 'GostMacro'
         has_many :gost_documents
         has_many :bibliographiс_references, class_name: 'GostBibliographicReference'
       end

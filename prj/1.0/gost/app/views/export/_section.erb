@@ -1,4 +1,7 @@
-\<%= latex_header(level) %>{<%= section.title %>}
+<% section.attachments.each { |attachment|
+FileUtils.cp attachment.diskfile, File.join(pwd, attachment.filename)
+}
+%>
 <% if section.helper %>
     <%= latex render partial: "export/#{section.helper.name}", locals: {settings: section.helper.settings} %>
 <% else %>

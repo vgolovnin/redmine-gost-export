@@ -1,0 +1,11 @@
+<div class="contextual">
+  <%= link_to 'Создать', new_project_macro_path, remote: true, class: "icon icon-add" %>
+</div>
+
+<h3>Текстовые шаблоны</h3>
+
+<%= render partial: 'macro', collection: @macros %>
+
+<% content_for :sidebar do %>
+    <% render partial: 'gost_plugin/sidebar' %>
+<% end %>

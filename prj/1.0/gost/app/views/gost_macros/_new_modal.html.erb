@@ -1,0 +1,14 @@
+<%= form_for @macro, url: {controller: 'gost_macros', action: 'create'} do |f| %>
+<p>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+</p>
+
+<p>
+  <%= f.label :text %>
+  <%= f.text_area :text %>
+</p>
+
+<%= f.submit %>
+
+<% end %>

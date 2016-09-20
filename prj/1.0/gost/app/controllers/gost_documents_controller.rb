@@ -1,4 +1,5 @@
 class GostDocumentsController < GostPluginController
+  menu_item :gost_documents
 
   def index
     @documents = @project.gost_documents
@@ -56,8 +57,16 @@ class GostDocumentsController < GostPluginController
       flash[:error] = "Set info first"
       redirect_to action: 'index'
     else
-      tex = render_to_string 'export/document.tex.erb', layout: false
-      send_file LatexBuild.new.build(tex), disposition: 'inline'
+
+      builder = LatexBuild.new(@project, @bibs)
+      pdf = builder.build(@document)
+      errors = builder.errors(@document.title)
+      if errors.any?
+        render plain: "PLOHO\n" + errors.join("\n")
+      else
+        send_file pdf, disposition: 'inline'
+      end
+
     end
   end
 

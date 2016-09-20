@@ -10,6 +10,6 @@ class SignersController < GostPluginController
 
   def create
     @signer = @project.gost_info.signers.create(params.require(:signer).permit!)
-    render js: 'hideModal()'
+    render js: 'hideModal(); location.reload(true);'
   end
 end
