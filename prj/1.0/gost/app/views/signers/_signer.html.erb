@@ -1,0 +1,20 @@
+<div id="signer_<%= signer.id %>">
+
+<%= form_for [@project, signer], method: 'patch', remote: true do |f| %>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+   <p>
+     <%= f.label :position %>
+     <%= f.text_area :position %>
+   </p>
+    <p>
+      <%= f.label :role %>
+      <%= f.select :role, [['Согласовано', 1], ['Утверждаю', 2], ['Исполнитель', 3]] %>
+    </p>
+    <p>
+      <%= f.submit %><%= link_to '[X]', [@project, signer], method: 'delete', remote: true %>
+    </p>
+<% end %>
+</div>

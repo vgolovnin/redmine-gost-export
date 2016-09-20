@@ -1,6 +1,7 @@
 resources :projects do
-   resources :signers
-   resource :gost_info, controller: 'gost_info', only: [:edit, :update]
+   resources :signers, only: [:index, :new, :create, :update, :destroy]
+   get :gost_info, to: 'gost_info#edit'
+   put :gost_info, to: 'gost_info#update'
    resources :macros, controller: 'gost_macros'
    resources :bibliography, controller: 'gost_bibliography'
    resources :gost_documents do

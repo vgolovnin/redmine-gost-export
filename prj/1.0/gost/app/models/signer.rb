@@ -2,6 +2,15 @@ class Signer < ActiveRecord::Base
 
 belongs_to :gost_info
 
+validates :name, :position, :role, presence: true
+
+
+def self.all_set_for_project(project)
+  signers = project.gost_info.signers
+  signers.agreed and signers.approved and signers.performer
+end
+
+#fixme enum
 def self.agreed
   self.where(role: 1).first
 end

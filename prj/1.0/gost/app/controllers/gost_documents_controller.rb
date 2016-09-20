@@ -53,8 +53,8 @@ class GostDocumentsController < GostPluginController
     @document = @project.gost_documents.find(params[:id])
     @info = @project.gost_info
     @bibs = GostBibliographicReference.get @project
-    if @info.nil? #fixme || not @info.signers_set
-      flash[:error] = "Set info first"
+    if @info.nil? or not Signer.all_set_for_project(@project)
+      flash[:error] = "Необходимо задать информацию о проекте и подписывающие лица"
       redirect_to action: 'index'
     else
 
@@ -62,7 +62,7 @@ class GostDocumentsController < GostPluginController
       pdf = builder.build(@document)
       errors = builder.errors(@document.title)
       if errors.any?
-        render plain: "PLOHO\n" + errors.join("\n")
+        render plain: "Ошибки при сборке:\n" + errors.join("\n")
       else
         send_file pdf, disposition: 'inline'
       end

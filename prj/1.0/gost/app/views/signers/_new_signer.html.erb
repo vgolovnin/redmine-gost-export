@@ -1,0 +1,22 @@
+<div>
+<h3 class="title">Добавить подписанта</h3>
+
+<%= form_for [@project, @signer], remote: true do |f| %>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :position %>
+      <%= f.text_area :position %>
+    </p>
+    <p>
+      <%= f.label :role %>
+      <%= f.select :role, [['Согласовано', 1], ['Утверждаю', 2], ['Исполнитель', 3]] %>
+    </p>
+
+<%= f.submit %>
+
+<% end %>
+</div>
