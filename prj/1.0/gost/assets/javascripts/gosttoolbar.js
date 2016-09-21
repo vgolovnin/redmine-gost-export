@@ -106,17 +106,8 @@ jsToolBar.prototype.elements.space3 = {type: 'space'}
 
 
 
-// spacer
-jsToolBar.prototype.elements.space4 = {type: 'space'}
 
-// wiki page
-jsToolBar.prototype.elements.macro = {
-    type: 'button',
-    title: 'Macro',
-    fn: {
-        wiki: function() { this.encloseSelection("{{", "}}") }
-    }
-}
+
 // image
 jsToolBar.prototype.elements.img = {
     type: 'button',
@@ -129,14 +120,22 @@ jsToolBar.prototype.elements.img = {
 // spacer
 jsToolBar.prototype.elements.space5 = {type: 'space'}
 // help
+/*
 jsToolBar.prototype.elements.help = {
     type: 'button',
     title: 'Help',
     fn: {
         wiki: function() { window.open(this.help_link, '', 'resizable=yes, location=no, width=300, height=640, menubar=no, status=no, scrollbars=yes') }
     }
-}
+}*/
 
+jsToolBar.prototype.elements.macro = {
+    type: 'button',
+    title: 'Macro',
+    fn: {
+        wiki: function() { this.encloseSelection("{{", "}}") }
+    }
+}
 
 jsToolBar.prototype.elements.cite = {
     type: 'button',

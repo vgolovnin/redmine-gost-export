@@ -1,0 +1,12 @@
+.jstb_cite {
+    background-image: url(../images/cite.png);
+}
+
+.jstb_macro {
+    background-image: url(../images/macro.png);
+}
+
+
+.jstb_section_duplicate {
+    background-image: url(/images/duplicate.png);
+}
