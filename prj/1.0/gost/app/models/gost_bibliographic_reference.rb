@@ -12,20 +12,7 @@ class GostBibliographicReference < ActiveRecord::Base
   end
 
   def self.uspd
-    templates = YAML.load_file("#{Rails.root}/plugins/gost/config/data/uspd_standarts.yml")['uspd']
-    bibs = BibTeX::Bibliography.new
-    templates.each do |template|
-      bibs << BibTeX::Entry.new({
-          bibtex_type: :book,
-          bibtex_key: template['key'],
-          title: template['title'],
-          address: 'М.',
-          publisher: 'ИПК Издательство стандартов',
-          series: 'Единая система программной документации',
-          year: '2001'
-        })
-    end
-    bibs
+    BibTeX.open("#{Rails.root}/plugins/gost/config/data/gost.bib")
   end
 
   def self.get(project)
