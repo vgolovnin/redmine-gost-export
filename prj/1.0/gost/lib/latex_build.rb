@@ -23,7 +23,7 @@ class LatexBuild
        # Resolve CSS styles if any have been set
        styling = opts[:class].to_s.split(/\s+/).collect { |style| latex_image_styles[style] }.compact.join ','
        # Build latex code
-       [ "\\begin{figure}",
+       [ "\\begin{figure}[h!]",
          "  \\centering",
          "  \\includegraphics[#{styling}]{#{opts[:src]}}",
          ("  \\caption{#{escape opts[:title]}}" if opts[:title]),
@@ -32,8 +32,11 @@ class LatexBuild
        ].compact.join "\n"
      end
 
+
+
      def table_open(opts)
        @table_label = opts[:id]
+       @table_columns = nil
        @table = []
        @table_multirow = {}
        @table_multirow_next = {}
@@ -45,15 +48,50 @@ class LatexBuild
        return ''
      end
 
-     def table_close(opts)
-       output  = "\\begin{table}\n"
-       output << "  \\centering\n"
-       output << "  \\begin{tabular}{ #{"l " * @table[0].size }}\n"
-       @table.each do |row|
-         output << "    #{row.join(" & ")} \\\\\n"
+     def td(opts)
+       column = @table_row.size
+       while @table_multirow.has_key?(column) && @table_multirow[column] > 0 do
+         @table_row.push("")
+         @table_multirow[column] -= 1
+         column += 1
        end
-       output << "  \\end{tabular}\n"
-       output << "\\end{table}\n"
+
+       if opts[:th]
+         opts[:text] = "\\textbf{#{opts[:text]}}"
+       end
+
+       if opts[:colspan]
+         opts[:text] = "\\multicolumn{#{opts[:colspan]}}{ #{"X " * opts[:colspan].to_i}}{#{opts[:text]}}"
+       end
+       if opts[:rowspan]
+         @table_multirow_next[column] = opts[:rowspan].to_i - 1
+         opts[:text] = "\\multirow{#{opts[:rowspan]}}{\\linewidth}{#{opts[:text]}}"
+       end
+       @table_row.push(opts[:text])
+       return ""
+     end
+
+     def tr_close(opts)
+       @table_columns ||= @table_row.size
+       @table_multirow.merge!(@table_multirow_next)
+       @table_multirow_next = {}
+       clines = (1..@table_columns).select {|i| @table_multirow[i-1].nil? || @table_multirow[i-1].zero?}
+           .slice_when {|i, j| i+1 != j}.map {|a| "\\cline{#{a.first}-#{a.last}}"}.join ' '
+       clines.empty? || clines << "\n"
+
+       @table.push(@table_row.join(" & ") + "\\\\\n#{clines}")
+       return ""
+     end
+
+     def table_close(opts)
+       output = "\\begin{table}[h!]\n"
+       output << "\\begin{tabularx}{\\linewidth}{ |#{" X |" * @table_columns }}\n"
+       output << "\\hline\n"
+       output << @table.join
+       output << "\\hline\n"
+       output << "\\end{tabularx}\n"
+       output << "\\label{#{@table_label}}\n" if @table_label.present?
+       output << "\\end{table}"
        output
      end
 
