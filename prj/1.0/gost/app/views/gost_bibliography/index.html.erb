@@ -1,12 +1,10 @@
 <h3>Библиография</h3>
-
 <% @bibs.each do |bib| %>
   <p>
-    <% unless 0%>
-      <%= bib.text %>
-      <%= link_to '[X]', project_gost_bibliography_path(@project, bib), method: :delete, data: {confirm: 'sure?'} %>
-    <% else %>
-      <%= bib.to_s %>
+      <%= bib %>
+    <% unless bib.id.nil? %>
+      <%= link_to 'Удалить', project_bibliography_path(@project, bib),
+                  method: :delete, data: {confirm: 'sure?'}, class: 'icon icon-del' %>
     <% end %>
   </p>
 <% end %>

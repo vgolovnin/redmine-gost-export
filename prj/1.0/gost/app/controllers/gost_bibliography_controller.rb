@@ -4,10 +4,6 @@ class GostBibliographyController < GostPluginController
   def index
     @bibs = GostBibliographicReference.get @project
 
-    if @bibs.errors?
-      flash[:error] = "BIB error"
-    end
-
     respond_to do |format|
       format.html
       format.json {render json: @bibs.map{|bib| {
@@ -22,13 +18,19 @@ class GostBibliographyController < GostPluginController
   end
 
   def create
-      @bib = BibTeX.parse(params[:gost_bibliographic_reference][:text])
+
+    if params[:gost_bibliographic_reference][:bib_file].present?
+      bibtext = params[:gost_bibliographic_reference][:bib_file].read
+    else
+      bibtext = params[:gost_bibliographic_reference][:text]
+    end
+
+      @bib = BibTeX.parse(bibtext)
       raise BibTeX::ParseError if @bib.errors? #FIXME check syntax
 
       @bib.each do |rbo|
        entry = @project.bibliographiс_references.build
        entry.rbo = rbo
-       #entry.project_id = @project.id
        entry.save
       end
 
