@@ -13,7 +13,6 @@ class GostDocument < ActiveRecord::Base
       elem = elem.parent
     end
 
-    #fixme rescue not found
     elem.parent.id == self.id ? section : nil
 
   end

@@ -1,20 +1,19 @@
 <div class="gost_section">
-  <p><%= f.hidden_field :index %></p>
+
+  <%= f.hidden_field :index %>
   <% if f.object.parent.class == GostDocument %>
       <%= f.text_area :description %>
   <% end %>
 
-  <p>
-    <%= raw "<h#{depth} class='section_title'>#{f.object.title}
-    <a href='#' class='section_edit_link'>#{image_tag('edit.png')}</a></h#{depth}>" %>
-    <br>
+  <div>
+    <%= raw "<h#{depth} class='section_title'>#{f.object.title}</h#{depth}>" %>
     <%= f.text_field :title, size: 64, style: "display: none" %>
-  </p>
+  </div>
 
-<div class="gost_section_contents">
+  <div class="gost_section_contents">
 
 <p>
-  <%= f.text_area :text, cols: '128', rows: '15', class: 'jsToolBar' %>
+  <%= f.text_area :text, cols: '100', rows: '15', class: 'jsToolBar' %>
 </p>
 <% unless f.object.helper.nil?  %>
       <%= render partial: "gost_helpers/#{f.object.helper.name}_settings", locals: {settings: f.object.helper.settings} %>
@@ -25,24 +24,27 @@
   </div>
 
 
-<div class="gost_section_subsections">
-<% if f.object.sections.size > 0 %>
+
+<% if f.object.sections.any? %>
+    <div class="gost_section_subsections">
     <%= f.fields_for :sections, f.object.sections do |subsection_form| %>
         <%= render partial: 'sections/section', locals: {f: subsection_form, depth: depth+1} %>
     <% end %>
+    </div>
 <% end %>
-</div>
+
 </div>
 
+  <div class="gost_section_tips">
   <% if defined? f.object.tips %>
-      <div class="gost_section_tips"><%= f.object.tips %></div>
+      <%= f.object.tips %>
   <% else %>
-      <div class="gost_section_tips">tips here</div>
+      tips here
   <% end %>
+  </div>
 
   <style>
-    .gost_section {clear: both;}
-    .gost_section_contents {float: left; width: 60%;}
-    .gost_section_tips {float: left; width: 40%;}
+    /*.gost_section_contents {float: left; width: 40%;}
+    .gost_section_tips {float: left; width: 40%;}*/
   </style>
 </div>

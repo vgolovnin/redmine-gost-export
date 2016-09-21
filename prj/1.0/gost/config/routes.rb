@@ -5,7 +5,7 @@ resources :projects do
    resources :macros, controller: 'gost_macros'
    resources :bibliography, controller: 'gost_bibliography'
    resources :gost_documents do
-     resources :sections, only: [:edit, :update] do
+     resources :sections, only: [:new, :create, :edit, :update, :destroy] do
        resource :duplicate, controller: 'section_duplicates', only: [:new, :create, :destroy]
      end
      member do

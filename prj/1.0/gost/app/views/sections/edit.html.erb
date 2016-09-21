@@ -7,7 +7,6 @@
         stylesheet_link_tag('gosttoolbar', plugin: 'gost')
   end
 %>
-
 <script>
   $(function(){
 
@@ -19,27 +18,31 @@
         });
 
   });
-</script>
 
-<div id="bibliography" style="display:none"></div>
-
-<script>
   $(function(){
   $("a.section_edit_link").click(function(){
     $(this).parent().hide();
     $(this).parent().parent().find("input").show();
-    //$(this).hide();
     return false;
   });
   });
 </script>
 
-
+<div class="contextual">
+  <%= link_to 'Создать подраздел', new_project_gost_document_section_path(@project, @document, parent_id: @section.id), remote: true, class: 'icon icon-add' %>
+  <%= link_to 'Удалить раздел', [@project, @document, @section], method: 'delete', data: {confirm: 'sure?'}, class: 'icon icon-del' %>
+</div>
 <%= form_for [@project, @document, @section] do |section_form| %>
     <%= render partial: 'sections/section', locals: {f: section_form, depth: 1} %>
 
     <div style="clear:both">
+
     <%= section_form.submit %>
       <%= link_to 'К документу', project_gost_document_path(@project, @document) %>
     </div>
+<% end %>
+
+
+<% content_for :sidebar do %>
+    <% render partial: 'gost_plugin/sidebar' %>
 <% end %>

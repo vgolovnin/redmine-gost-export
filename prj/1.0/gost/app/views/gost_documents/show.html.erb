@@ -1,5 +1,6 @@
 <div class="contextual">
-  <%= link_to 'Редактировать',  edit_project_gost_document_path(@project, @document), class: 'icon icon-edit' %>
+  <%= link_to 'Создать раздел', new_project_gost_document_section_path(@project, @document), remote: true, class: 'icon icon-add' %>
+  <%= link_to 'Редактировать параметры документа',  edit_project_gost_document_path(@project, @document), class: 'icon icon-edit' %>
   <%= link_to 'Удалить', [@project, @document], method: 'delete', data: {confirm: 'sure?'}, class: 'icon icon-del' %>
 </div>
 

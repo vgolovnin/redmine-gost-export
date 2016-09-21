@@ -11,6 +11,9 @@ class Section < ActiveRecord::Base
   has_many :duplicates, class_name: 'Section', foreign_key: 'origin_id'
   belongs_to :origin, class_name: 'Section'
 
+  validates_presence_of :title
+  validates_uniqueness_of :index, scope: 'parent_id'
+
   after_find :set_duplicate
   before_save :set_origin
 

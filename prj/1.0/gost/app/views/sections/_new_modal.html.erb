@@ -1,0 +1,10 @@
+<%= form_for [@project, @document, @section], remote: true do |f| %>
+    <% unless @parent.class == GostDocument %>
+      <%= f.hidden_field :parent_id %>
+    <% end %>
+
+    <%= f.hidden_field :index %>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+    <%= f.submit %>
+<% end %>
