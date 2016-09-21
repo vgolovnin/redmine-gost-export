@@ -100,7 +100,7 @@ class LatexBuild
 
      [:cite, :ref, :label].each do |command|
         define_method(command) do |text|
-          text.gsub! /(\s|^)\{\{#{command}\((.*?)\)\}\}/, "==\\#{command}{\\2}=="
+          text.gsub! /(\s|^)\{\{#{command}\((.*?)\)\}\}/, "==~\\#{command}{\\2}=="
           end
        end
 

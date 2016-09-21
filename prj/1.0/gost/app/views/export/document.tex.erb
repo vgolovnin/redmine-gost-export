@@ -76,15 +76,15 @@
 
 \def\vhrulefill#1{\makebox[#1][l]{\leavevmode\leaders\hrule\@height0.5pt\hfill \kern\z@}}
 
-\newcommand{\signature}[3]{%
-\parbox{0.4\textwidth}{%
+\newcommand{\signature}[3]{
+\parbox[t][12em][t]{18em}{
 \begin{center}
 #1
-\par
+\vskip 1em
 #2
-\par
+\vfill
 \vhrulefill{7em}~#3
-\par
+
 «\vhrulefill{2em}»~\vhrulefill{5em}~{\number\year}~г.
 \end{center}
 }}
@@ -96,8 +96,7 @@
 \@organizationunit \\
 
 
-\@agreed
-\@approved
+\makebox[\linewidth]{\@agreed\@approved}
 
 \vskip 20mm
 
@@ -223,7 +222,6 @@
 \usepackage{fontspec}
 \usepackage{polyglossia}
 \usepackage{hyperref}
-\usepackage{amsmath, amsthm, amssymb}
 \usepackage{setspace}
 \usepackage[normalem]{ulem}
 \usepackage{multirow}
@@ -235,7 +233,9 @@
 
 \bibliographystyle{ugost2008}
 
+
 \setdefaultlanguage{russian}
+\PolyglossiaSetup{russian}{indentfirst=true}
 \setotherlanguages{english}
 
 \setmainfont{Times}
