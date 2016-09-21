@@ -56,13 +56,12 @@ class GostDocumentsController < GostPluginController
 
       builder = LatexBuild.new(@project, @bibs)
       pdf = builder.build(@document)
-      errors = builder.errors(@document.title)
+      errors = builder.errors
       if errors.any?
         render plain: "Ошибки при сборке:\n" + errors.join("\n")
       else
         send_file pdf, disposition: 'inline'
       end
-
     end
   end
 

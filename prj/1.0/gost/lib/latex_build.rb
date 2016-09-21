@@ -32,15 +32,13 @@ class LatexBuild
        ].compact.join "\n"
      end
 
-
-
      def table_open(opts)
        @table_label = opts[:id]
        @table_columns = nil
        @table = []
        @table_multirow = {}
        @table_multirow_next = {}
-       return  ''
+       return ''
      end
 
      def tr_open(opts)
@@ -102,7 +100,7 @@ class LatexBuild
 
      [:cite, :ref, :label].each do |command|
         define_method(command) do |text|
-          text.gsub! /\{\{#{command}\((.*?)\)\}\}/, "==\\#{command}{\\1}=="
+          text.gsub! /(\s|^)\{\{#{command}\((.*?)\)\}\}/, "==\\#{command}{\\2}=="
           end
        end
 
@@ -129,55 +127,48 @@ class LatexBuild
    def initialize(project, bibs)
      @project = project
      self.binary = "latexmk"
-     self.build_directory = File.join(Rails.root, 'tmp', 'gost', 'build')
-     self.options = "-xelatex -interaction=nonstopmode"
+     self.build_directory = File.join(Rails.root, 'tmp', 'gost', 'build', @project.identifier)
+     self.options = "-xelatex -interaction=nonstopmode -halt-on-error"
      @view = LatexView.new('plugins/gost/app/views', project: @project,
                            info: @project.gost_info, bibs: bibs)
-     self.clean #fixme multuthread
+     self.clean
 
      RedCloth::TextileDoc.send(:include, GostLatexExtension)
    end
 
    def build(document)
-     @exc_error = []
      pwd = Dir.pwd
-     directory = File.join(self.build_directory, document.title)
+     directory = File.join(self.build_directory, "#{document.title}_#{Time.now.to_i}")
      FileUtils.mkdir_p directory
      Dir.chdir directory
 
-     name="export"
-
-     log = ""
-
      @view.assign document: document, directory: directory
 
-     File.write(File.join(directory, "#{name}.tex"),
+     File.write(File.join(directory, "#{document.id}.tex"),
                 @view.render(file: 'export/document.tex.erb'))
      Dir.chdir directory
+     @errors = []
      begin
-     f = IO.popen(self.binary + " " + self.options + " " + name)
-     log << f.readlines.join
-     f.close
-
-   rescue StandardError => e
-      @exc_error = e
-     ensure
-     Dir.chdir pwd
+     f = IO.popen("#{self.binary} #{self.options} #{document.id}.tex")
+     f.readlines.each do |line|
+        if line.match(/(^!\s)|(\serror(\s|:))/i)
+          @errors << line
+        end
      end
-     self.log = log
-     File.join(directory, name + ".pdf")
+     rescue StandardError => e
+      @errors << e
+     ensure
+       f.close
+      Dir.chdir pwd
+     end
+     File.join(directory, "#{document.id}.pdf")
    end
 
    def clean
      FileUtils.rm_rf Dir.glob("#{self.build_directory}/*")
    end
 
-   def errors(name)
-     [@exc_error] if @exc_error
-     @errors = []
-     File.readlines(File.join(self.build_directory, name, 'export.log')).each do |line|
-       @errors << line if line.match(/(^!\s)|(\serror(\s|:))/i)
-     end
+   def errors
      @errors
    end
 
