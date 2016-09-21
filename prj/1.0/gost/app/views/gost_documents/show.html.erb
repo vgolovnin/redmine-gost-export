@@ -1,6 +1,15 @@
+<div class="contextual">
+  <%= link_to 'Редактировать',  edit_project_gost_document_path(@project, @document), class: 'icon icon-edit' %>
+  <%= link_to 'Удалить', [@project, @document], method: 'delete', data: {confirm: 'sure?'}, class: 'icon icon-del' %>
+</div>
+
 <h1><%= @document.title %></h1>
 <%= @document.description %>
 
 <% @document.sections.each_with_index  do |section, index| %>
     <%= render partial: 'show_section', locals: {section: section, index: index+1, theindex: '', level: 2} %>
+<% end %>
+
+<% content_for :sidebar do %>
+    <% render partial: 'gost_plugin/sidebar' %>
 <% end %>

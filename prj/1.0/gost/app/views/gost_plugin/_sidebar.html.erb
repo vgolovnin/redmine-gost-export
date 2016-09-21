@@ -2,6 +2,13 @@
 <ul>
   <li>
     <%= link_to 'Документы', project_gost_documents_path %>
+    <% if @project.gost_documents.any? %>
+    <ul>
+      <% @project.gost_documents.each do |document| %>
+        <li> - <%= link_to document.title, [@project, document] %></li>
+      <% end %>
+    </ul>
+    <% end %>
   </li>
   <li>
     <%= link_to 'Редактировать информацию о проекте', project_gost_info_path %>
