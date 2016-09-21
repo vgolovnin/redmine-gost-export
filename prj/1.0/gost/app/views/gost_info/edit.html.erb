@@ -7,18 +7,7 @@
     </p>
 
     <p>
-      <%= f.label :organization %><br>
-      <%= f.text_area :organization %>
-    </p>
-
-    <p>
-      <%= f.label :organization_unit %><br>
-      <%= f.text_area :organization_unit %>
-    </p>
-
-
-    <p>
-      <%= f.label :project_type %><br>
+      <%# f.label :project_type %><br>
       <%#f.select :project_type %>
     </p>
 
@@ -26,6 +15,21 @@
       <%= f.label :description %><br>
       <%= f.text_area :description %>
     </p>
+
+    <p>
+      <%= f.label :organization %><br>
+      <%= f.text_area :organization %>
+    </p>
+    <p>
+      <%= f.label :location %><br>
+      <%= f.text_area :location %>
+    </p>
+
+    <p>
+      <%= f.label :organization_unit %><br>
+      <%= f.text_area :organization_unit %>
+    </p>
+
 
     <p>
       <%= f.label :country_code %><br>
@@ -48,16 +52,6 @@
                                      :method => 'get',
                                      :title => l(:label_signer_new),
                                      :tabindex => 200) %>
-
-
-<p>
-Согласовано: <%= select_tag :agreed_id, options_for_select(@info.signers.collect {|c| [c.name, c.id]},
-                           @info.signers.agreed.nil? ? 0 : @info.signers.agreed.id), :include_blank => true %>
-Утверждаю: <%= select_tag :approved_id, options_for_select(@info.signers.collect {|c| [c.name, c.id]},
-                           @info.signers.approved.nil? ? 0 : @info.signers.approved.id), :include_blank => true %>
-Исполнитель: <%= select_tag :performer_id, options_for_select(@info.signers.collect {|c| [c.name, c.id]},
-                           @info.signers.performer.nil? ? 0 : @info.signers.performer.id), :include_blank => true %>
-</p>
 
 
 
