@@ -24,7 +24,7 @@
 
 <% @document.sections.each do |section|%>
     <%= f.fields_for :sections, section do |section_form| %>
-      <%= render partial: 'section', locals: {f: section_form, depth: 1} %>
+      <%= render partial: 'sections/section', locals: {f: section_form, depth: 1} %>
     <% end %>
 <% end %>
 

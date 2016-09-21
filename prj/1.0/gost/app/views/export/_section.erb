@@ -4,6 +4,6 @@ FileUtils.cp attachment.diskfile, File.join(pwd, attachment.filename)
 %>
 <%= raw latex(section.text) %>
 <% if section.helper %>
-<%= latex render partial: "export/#{section.helper.name}", locals: {settings: section.helper.settings} %>
+<%= raw latex render partial: "export/#{section.helper.name}", locals: {settings: section.helper.settings} %>
 <% end %>
 

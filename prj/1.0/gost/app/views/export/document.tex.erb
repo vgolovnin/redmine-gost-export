@@ -17,7 +17,7 @@
 \headsep=5mm
 \textwidth=180mm
 \textheight=247mm
-\footskip=10mm
+\footskip=15mm
 \setlength{\unitlength}{1mm}
 
 \def\ps@uspd{
@@ -124,7 +124,7 @@
 \end{flushright}
 
 \vfill
-{{\number\year}}
+\textbf{\@organizationlocation~{{\number\year}}}
 \end{center}
 \label{endlu}
 }
@@ -152,7 +152,7 @@
 \textbf{\pagesfield{enddoc}}
 
 \vfill
-{{\number\year}}
+\textbf{\@organizationlocation~{{\number\year}}}
 \end{center}
 }}
 }
@@ -209,6 +209,7 @@
 \newcommand{\project}[1]{\def\@project{#1}}
 \newcommand{\organization}[1]{\def\@organization{#1}}
 \newcommand{\organizationunit}[1]{\def\@organizationunit{#1}}
+\newcommand{\organizationlocation}[1]{\def\@organizationlocation{#1}}
 \newenvironment{uspd}[1]{\sloppy\UspdApprovalPage{#1}\UspdTitlePage{#1}
 <% if @document.has_annotation %>
 \section*{Аннотация}{\@abstracts}
@@ -225,7 +226,6 @@
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{setspace}
 \usepackage[normalem]{ulem}
-%\usepackage{listings}
 \usepackage{multirow}
 \usepackage{float}
 \usepackage[section, numbib, numindex]{tocbibind}
@@ -241,23 +241,14 @@
 \newfontfamily\cyrillicfont{Times}
 \setmonofont{DejaVu Sans Mono}
 
-
-%\lstset{inputencoding=utf8,
-% extendedchars=\true
-% basicstyle=\ttfamily,
-% columns=fullflexible,
-% keepspaces=true,
-% }
-
 \begin{document}
 
 \sloppy
 
-<%# @document.latex_definitions.collect{|k,v| "#{k}{#{v.sub('|', '}{')}}"}.join("\n") %>
-
 \project{<%= latex @info.title %>}
 \organization{<%= latex @info.organization %>}
 \organizationunit{<%= latex @info.organization_unit %>}
+\organizationlocation{<%= latex @info.location %>}
 
 <%
 agreed = @info.signers.agreed

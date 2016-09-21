@@ -35,7 +35,7 @@
 
 
 <%= form_for [@project, @document, @section] do |section_form| %>
-    <%= render partial: 'gost_documents/section', locals: {f: section_form, depth: 1} %>
+    <%= render partial: 'sections/section', locals: {f: section_form, depth: 1} %>
 
 
     <div style="clear:both">

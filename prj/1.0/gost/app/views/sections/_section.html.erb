@@ -1,5 +1,8 @@
 <div class="gost_section">
   <p><%= f.hidden_field :index %></p>
+  <% if f.object.parent.class == GostDocument %>
+      <%= f.text_area :description %>
+  <% end %>
 
   <p>
     <%= raw "<h#{depth} class='section_title'>#{f.object.title}
@@ -10,8 +13,6 @@
 
 <div class="gost_section_contents">
 
-
-<%= f.hidden_field :description %>
 <p>
   <%= f.text_area :text, cols: '128', rows: '15', class: 'jsToolBar' %>
 </p>
@@ -27,7 +28,7 @@
 <div class="gost_section_subsections">
 <% if f.object.sections.size > 0 %>
     <%= f.fields_for :sections, f.object.sections do |subsection_form| %>
-        <%= render partial: 'gost_documents/section', locals: {f: subsection_form, depth: depth+1} %>
+        <%= render partial: 'sections/section', locals: {f: subsection_form, depth: depth+1} %>
     <% end %>
 <% end %>
 </div>
