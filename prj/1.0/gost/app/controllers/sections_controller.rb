@@ -29,7 +29,6 @@ class SectionsController < GostPluginController
     render js: 'location.reload();'
   end
 
-
   def edit
     @document = @project.gost_documents.find(params[:gost_document_id])
     @section = @document.nested_section(params[:id])
@@ -39,11 +38,11 @@ class SectionsController < GostPluginController
     @document = @project.gost_documents.find(params[:gost_document_id])
     @section = @document.nested_section(params[:id])
 
-    if @section.helper.nil?
-      @section.update(params.require(:section).permit!)
-      Attachment.attach_files(@section, params[:attachments])
+    @section.update(params.require(:section).permit!)
 
-    else
+    Attachment.attach_files(@section, params[:attachments])
+
+    if @section.helper.present?
       @section.helper.update(settings: helper_settings_list(@section.helper.name))
     end
 
@@ -63,7 +62,6 @@ class SectionsController < GostPluginController
     end
 
   end
-
 
   private
 

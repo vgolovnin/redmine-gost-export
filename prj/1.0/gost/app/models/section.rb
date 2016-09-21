@@ -12,7 +12,7 @@ class Section < ActiveRecord::Base
   belongs_to :origin, class_name: 'Section'
 
   validates_presence_of :title
-  validates_uniqueness_of :index, scope: 'parent_id'
+  validates_uniqueness_of :index, scope: ['parent_id', 'parent_type']
 
   after_find :set_duplicate
   before_save :set_origin

@@ -45,15 +45,10 @@ class GostDocumentsController < GostPluginController
     redirect_to action: 'edit'
   end
 
-  # def create_section
-  #   @document = @project.gost_documents.find(params[:id])
-  #   @document.sections.build
-  # end
-
   def export
     @document = @project.gost_documents.find(params[:id])
     @info = @project.gost_info
-    @bibs = GostBibliographicReference.get @project
+    @bibs = GostBibliographicReference.get_bibliography @project
     if @info.nil? or not Signer.all_set_for_project(@project)
       flash[:error] = "Необходимо задать информацию о проекте и подписывающие лица"
       redirect_to action: 'index'
