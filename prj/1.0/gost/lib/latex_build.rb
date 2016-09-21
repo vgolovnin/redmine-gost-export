@@ -6,7 +6,7 @@ class LatexBuild
    class LatexView < ActionView::Base
 
      def latex(text, options = {})
-       rules = [:citation, :ref, :gost_macros]
+       rules = [:cite, :label, :ref, :gost_macros]
        rules << :no_headers unless options[:headers]
        rc = RedCloth::TextileDoc.new(text || '', [:filter_html])
        rc.macros = @project.macros
@@ -100,13 +100,11 @@ class LatexBuild
    module GostLatexExtension
      attr_accessor :macros
 
-     def citation(text)
-       text.gsub! /\{\{cite\((.*?)\)\}\}/, "==\\cite{\\1}=="
-     end
-
-     def ref(text)
-        text.gsub! /\{\{ref\((.*?)\)\}\}/, "==\\ref{\\1}=="
-     end
+     [:cite, :ref, :label].each do |command|
+        define_method(command) do |text|
+          text.gsub! /\{\{#{command}\((.*?)\)\}\}/, "==\\#{command}{\\1}=="
+          end
+       end
 
      def gost_macros(text)
        self.macros.each do |macro|
