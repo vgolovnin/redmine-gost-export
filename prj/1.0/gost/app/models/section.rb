@@ -12,7 +12,7 @@ class Section < ActiveRecord::Base
   belongs_to :origin, class_name: 'Section'
 
   validates_presence_of :title
-  validates_uniqueness_of :index, scope: ['parent_id', 'parent_type']
+  validates_uniqueness_of :index, scope: ['parent_id', 'parent_type', 'is_appendix']
 
   after_find :set_duplicate
   before_save :set_origin
@@ -22,6 +22,9 @@ class Section < ActiveRecord::Base
 
 
   default_scope { order(index: :asc) }
+
+  scope :main, -> {where(is_appendix: [nil, false])}
+  scope :appendixes, -> {where(is_appendix: true)}
 
   def gost_document
     @gost_document unless @gost_document.nil?

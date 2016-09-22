@@ -11,6 +11,9 @@
       <p>
         Генерировать аннотацию <%= f.check_box :has_annotation %>
       </p>
+      <p>
+        Генерировать содержание <%= f.check_box :has_toc %>
+      </p>
 
       <p>
         Лист регистрации изменений <%= f.check_box :has_changeslist %>
@@ -22,13 +25,6 @@
       <p>
         <%= f.text_area :description, cols: '64', rows: '5' %>
       </p>
-
-
-      <% @document.sections.each do |section|%>
-          <%= f.fields_for :sections, section do |section_form| %>
-              <% # render partial: 'sections/section', locals: {f: section_form, depth: 1} %>
-          <% end %>
-      <% end %>
 
     <div style="clear: left;">
       <%= f.submit %>

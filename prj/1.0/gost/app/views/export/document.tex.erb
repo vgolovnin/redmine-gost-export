@@ -5,6 +5,7 @@
 \begin{filecontents}{uspd.sty}
 \usepackage{rotating}
 \usepackage{ifthen}
+\usepackage{sectsty}
 \hoffset=-5.4mm
 \voffset=-20.4mm
 \marginparwidth=0mm
@@ -24,15 +25,16 @@
   \def\@oddfoot{\vbox{\editboxm{\rightmark}}}
   \def\@oddhead{
     \vbox{
-    \vbox{\hfil\textnormal{\thepage}\hfil}
+    \vbox{\hfil\textbf{\thepage}\hfil}
     {\vskip 5mm}
-    \vbox{\hfil\textnormal{\rightmark~01-1}\hfil}
+    \vbox{\hfil\textbf{\rightmark~01-1}\hfil}
   }
  }
 }
 
 \let\stdsection\section
 \renewcommand\section{\newpage\stdsection}
+\sectionfont{\centering\large\MakeUppercase}
 
 \renewcommand{\labelenumi}{\arabic{enumi}.}
 \renewcommand{\labelenumii}{\labelenumi\arabic{enumii}.}
@@ -90,23 +92,26 @@
 }}
 
 \newcommand\UspdApprovalPage[1]{\thispagestyle{empty}\editbox{
-
+<% if @info.special_mark.present? %>
+\noindent\begin{picture}(0,0)
+\put(100, 10){\makebox[70mm][r]{<%= latex @info.special_mark %>}}
+\end{picture}
+<% end %>
 \begin{center}
 \textbf{\@organization} \\
 \@organizationunit \\
 
-
 \makebox[\linewidth]{\@agreed\@approved}
 
-\vskip 20mm
+\vskip 5em
 
 \makeatletter
-\textbf{\@project}
+\large\textbf{\@project}
 \vskip 1em
-\textbf{\@title}
+\large\textbf{\@title}
 \makeatother
 
-\vskip 7mm
+\vskip 1.5em
 
 {\large \textbf{ЛИСТ УТВЕРЖДЕНИЯ}}
 
@@ -116,7 +121,7 @@
 
 \textbf{\pagesfield{endlu}}
 
-\vskip 10mm
+\vskip 2em
 
 \begin{flushright}
 \@performer
@@ -134,28 +139,22 @@
 
 {{#1} 01-1-ЛУ}
 
-\vskip 30mm
+\vskip 7em
 
 \begin{center}
-
-\textbf{\@project}
+\large\textbf{\@project}
 \vskip 1em
-\textbf{\@title}
-
+\large\textbf{\@title}
 \vskip 1em
-
 \textbf{{{#1}}}
-
 \vskip 1em
-
 \textbf{\pagesfield{enddoc}}
-
 \vfill
 \textbf{\@organizationlocation~{{\number\year}}}
 \end{center}
 }}
 }
-\renewcommand{\rightmark}{\normalfont{#1}}
+\renewcommand{\rightmark}{#1}
 \pagestyle{uspd}
 \newpage
 }
@@ -211,9 +210,11 @@
 \newcommand{\organizationlocation}[1]{\def\@organizationlocation{#1}}
 \newenvironment{uspd}[1]{\sloppy\UspdApprovalPage{#1}\UspdTitlePage{#1}
 <% if @document.has_annotation %>
-\section*{Аннотация}{\@abstracts}
+\section*{АННОТАЦИЯ}{<%= latex(render partial: 'gost_document/annotation') %>}\newpage
 <% end %>
-\newpage\tableofcontents\newpage}{<% if @document.has_changeslist %>\UspdChangesList<% end %>}
+<% if @document.has_toc %>
+\tableofcontents\newpage
+<% end %>}{<% if @document.has_changeslist %>\UspdChangesList<% end %>}
 \makeatother
 \end{filecontents}
 
@@ -222,7 +223,6 @@
 \usepackage{fontspec}
 \usepackage{polyglossia}
 \usepackage{hyperref}
-\usepackage{setspace}
 \usepackage[normalem]{ulem}
 \usepackage{multirow}
 \usepackage{float}
@@ -233,7 +233,6 @@
 
 \bibliographystyle{ugost2008}
 
-
 \setdefaultlanguage{russian}
 \PolyglossiaSetup{russian}{indentfirst=true}
 \setotherlanguages{english}
@@ -243,14 +242,11 @@
 \setmonofont{DejaVu Sans Mono}
 
 \begin{document}
-
 \sloppy
-
 \project{<%= latex @info.title %>}
 \organization{<%= latex @info.organization %>}
 \organizationunit{<%= latex @info.organization_unit %>}
 \organizationlocation{<%= latex @info.location %>}
-
 <%
 agreed = @info.signers.agreed
 approved = @info.signers.approved
@@ -259,16 +255,14 @@ performer = @info.signers.performer
 \agreed{<%= latex agreed.position %>}{<%= latex agreed.name %>}
 \approved{<%= latex approved.position %>}{<%= latex approved.name %>}
 \performer{<%= latex performer.position %>}{<%= latex performer.name %>}
-
 \title{<%= @document.title %>}
-<% if @document.has_annotation %>
-\abstracts{<%= latex(render partial: 'gost_document/annotation') %>}
-<% end %>
-
 \begin{uspd}{<%= latex "#{@info.country_code}.#{@info.organization_code}.#{@info.okp_code}-01 #{@document.document_code}" %>}
 
-<%= render partial: 'export/sections', locals: {sections: @document.sections, level: 1, pwd: @directory} %>
-
+<%= render partial: 'export/sections', locals: {sections: @document.sections.main, level: 1, pwd: @directory} %>
 \bibliography{uspd}
+
+<% if @document.sections.appendixes.any? %>
+  <%= render partial: 'export/appendix', collection: @document.sections.appendixes %>
+<% end %>
 \end{uspd}
 \end{document}

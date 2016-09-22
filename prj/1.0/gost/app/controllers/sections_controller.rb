@@ -22,7 +22,7 @@ class SectionsController < GostPluginController
     else
       @parent = @document
     end
-    @section = @parent.sections.create(params.require(:section).permit([:index, :title]))
+    @section = @parent.sections.create(params.require(:section).permit([:index, :title, :is_appendix]))
     if @section.errors.any?
       flash[:error] = @section.errors
     end
