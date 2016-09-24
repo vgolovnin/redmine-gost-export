@@ -1,15 +1,16 @@
-
 class LatexBuild
    attr_accessor :binary, :build_directory, :options, :log
-
 
    class LatexView < ActionView::Base
 
      def latex(text, options = {})
-       rules = [:cite, :label, :ref, :gost_macros]
+       rules = [:code_file, :code_repo, :cite, :label, :ref, :gost_macros]
        rules << :no_headers unless options[:headers]
        rc = RedCloth::TextileDoc.new(text || '', [:filter_html])
+       rc.files = options[:files] || []
+       rc.project = @project
        rc.macros = @project.macros
+       rc.bibliography = @document.has_bibliography
        rc.to_gost_latex(*rules).chomp('')
      end
    end
@@ -20,12 +21,15 @@ class LatexBuild
      def image(opts)
        # Don't know how to use remote links, plus can we trust them?
        return "" if opts[:src] =~ /^\w+\:\/\//
-       # Resolve CSS styles if any have been set
-       styling = opts[:class].to_s.split(/\s+/).collect { |style| latex_image_styles[style] }.compact.join ','
+       img = self.files.find {|i| i[:filename] == opts[:src]}
+       return '' unless img
+       opts[:id] = File.basename(img[:filename]) unless opts[:id]
+       opts[:title] = img[:title]  unless opts[:title]
+       opts[:title] ||= ''
        # Build latex code
-       [ "\\begin{figure}[h!]",
+       [ "\\begin{figure}[H]",
          "  \\centering",
-         "  \\includegraphics[#{styling}]{#{opts[:src]}}",
+         "  \\includegraphics[width=1.0\\textwidth]{#{opts[:src]}}",
          ("  \\caption{#{escape opts[:title]}}" if opts[:title]),
          ("  \\label{#{escape opts[:id]}}" if opts[:id]),
          "\\end{figure}",
@@ -96,13 +100,40 @@ class LatexBuild
    end
 
    module GostLatexExtension
-     attr_accessor :macros
+     attr_accessor :macros, :bibliography, :files, :project
 
      [:cite, :ref, :label].each do |command|
         define_method(command) do |text|
-          text.gsub! /(\s|^)\{\{#{command}\((.*?)\)\}\}/, "==~\\#{command}{\\2}=="
+          text.gsub! /\{\{#{command}\((.*?)\)\}\}/, "==~\\#{command}{\\1}=="
           end
+     end
+
+     def code_file(text)
+       text.gsub! /\{\{code_file\((.*?)\)\}\}/ do
+         codefile = $1
+         return $0 unless self.files.find{|f| f[:filename] == codefile}
+         out = '<notextile>'
+       #  out << "\\begin{verbatim}"
+         out << "\\verbatiminput{#{codefile}}"
+        # out << "\\end{verbatim}"
+         out << '</notextile>'
        end
+     end
+
+     def code_repo(text)
+       text.gsub! /\{\{code_repo\((.*?)\)\}\}/ do
+         repository = self.project.repository
+         filename = $1
+         return $0 unless repository
+         filecontent = Redmine::CodesetUtil.to_utf8_by_setting(repository.cat(filename))
+         return $0 unless filecontent
+         out = '<notextile>'
+           out << "\\begin{verbatim}"
+         out << filecontent
+          out << "\\end{verbatim}"
+         out << '</notextile>'
+       end
+     end
 
      def gost_macros(text)
        self.macros.each do |macro|
@@ -112,7 +143,7 @@ class LatexBuild
      end
 
      def no_headers(text)
-       text.gsub! /(h\d\.)/, "==\\1=="
+       text.gsub! /^\s*(h\d\.)/, "==\\1=="
      end
 
      def to_gost_latex(*rules)
@@ -122,7 +153,6 @@ class LatexBuild
        to(RedCloth::Formatters::GostLatex).chomp
      end
    end
-
 
    def initialize(project, bibs)
      @project = project
@@ -151,7 +181,7 @@ class LatexBuild
      begin
      f = IO.popen("#{self.binary} #{self.options} #{document.id}.tex")
      f.readlines.each do |line|
-        if line.match(/(^!\s)|(\serror(\s|:))/i)
+        if line.match(/^!\s/i)
           @errors << line
         end
      end

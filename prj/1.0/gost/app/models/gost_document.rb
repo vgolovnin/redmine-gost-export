@@ -28,4 +28,9 @@ class GostDocument < ActiveRecord::Base
     self
   end
 
+
+  def self.templates
+    @templates ||= YAML.load_file("#{Rails.root}/plugins/gost/config/data/documents_templates.yml")['templates']
+  end
+
 end

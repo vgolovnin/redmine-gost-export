@@ -1,2 +1,6 @@
+<div class="contextual">
+
+  <%= link_to 'Добавить', new_project_signer_path(@project), remote: true, class: 'icon icon-add' %>
+</div>
 <%= render partial: 'signer', collection: @signers %>
-<%= link_to 'Добавить подписывающее лицо', new_project_signer_path(@project), remote: true, class: 'icon icon-add' %>
+

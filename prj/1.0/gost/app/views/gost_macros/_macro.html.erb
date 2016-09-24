@@ -1,8 +1,8 @@
 <div style="border-bottom: 1px dotted #bbb;">
 <%= form_for macro, url: {controller: 'gost_macros', action: 'update', id: macro}, remote: true do |f| %>
 <div class="title">
-<strong>{{</strong><%= f.text_field :title %><strong>}}</strong>
+<strong>{{</strong><%= f.text_field :title %><strong>}}</strong><%= f.submit 'Обновить' %>
 </div>
-<%= f.text_area :text %><%= f.submit %>
+<%= f.text_area :text, cols: 100, rows: 15 %>
 <% end %>
 </div>

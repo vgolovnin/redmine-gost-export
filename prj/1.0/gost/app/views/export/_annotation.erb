@@ -1,7 +1,8 @@
 <%= @document.description %>
 
 Документ <%= @document.title %> содержит следующие разделы:
-<%= @document.sections.map {|s| "«#{s.title}»"}.join(', ') %>.
+<%= @document.sections.main.map {|s| "«#{s.title}»"}.join(', ') %>
+<% if @document.sections.appendixes.any? %>и приложения<% end %>.
 
 <% @document.sections.each do |section|%>
   <% unless section.description.nil? %>

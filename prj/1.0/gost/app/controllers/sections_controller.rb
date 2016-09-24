@@ -1,6 +1,7 @@
 class SectionsController < GostPluginController
   menu_item :gost_documents
 
+  helper :gost_documents
   helper :attachments
 
   def new
@@ -69,6 +70,8 @@ class SectionsController < GostPluginController
     case name
       when 'functional_requirments'
         {issue_category_ids: params[:issue_category_ids]}
+      when 'documentation'
+        {documentation_codes: params[:documentation_codes]}
     end
   end
 end

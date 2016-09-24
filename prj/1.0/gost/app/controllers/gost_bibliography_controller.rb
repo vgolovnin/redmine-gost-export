@@ -7,8 +7,8 @@ class GostBibliographyController < GostPluginController
     respond_to do |format|
       format.html
       format.json {render json: @bibs.map{|bib| {
-          id: bib.id,
-          title: bib.title
+          id:  bib.rbo.id,
+          title: bib.rbo.title
       }}}
     end
   end
@@ -26,7 +26,7 @@ class GostBibliographyController < GostPluginController
     end
 
       @bib = BibTeX.parse(bibtext)
-      raise BibTeX::ParseError if @bib.errors? #FIXME check syntax
+      raise BibTeX::ParseError if @bib.errors? || @bib.empty?
 
       @bib.each do |rbo|
        entry = @project.bibliographiс_references.build
@@ -34,10 +34,10 @@ class GostBibliographyController < GostPluginController
        entry.save
       end
 
-      redirect_to action: 'index'
     rescue BibTeX::ParseError => e
-      flash[:error] = e.message
-      redirect_to action: 'new'
+      flash[:error] = "Неверный формат библиографической записи"
+  ensure
+      redirect_to action: 'index'
   end
 
   def destroy

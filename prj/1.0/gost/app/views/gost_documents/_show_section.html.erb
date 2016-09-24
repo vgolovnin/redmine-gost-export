@@ -1,16 +1,7 @@
-<%=raw "<h#{level}>#{theindex} #{section.title}" %>
-<%= link_to image_tag('edit.png'), edit_project_gost_document_section_path(@project, @document, section) %>
- <%=raw "</h#{level}>"%>
-
-<% if section.helper.nil? %>
-<div>
-  <%= section.text%>
-</div>
+<%=raw "<h#{level}> #{section.title}" %>
+<%= link_to image_tag(section.helper.nil? ? 'edit.png' : 'changeset.png'), edit_project_gost_document_section_path(@project, @document, section) %>
+<%=raw "</h#{level}>"%>
 
 <% section.sections.each_with_index  do |subsection, index| %>
     <%= render partial: 'show_section', locals: {section: subsection, theindex: "#{theindex}#{index+1}.", level: level+1} %>
-<% end %>
-
-<% else %>
-    <%= render partial: "gost_helpers/#{section.helper.name}", locals: {section: section} %>
 <% end %>

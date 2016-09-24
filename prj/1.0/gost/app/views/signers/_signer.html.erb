@@ -14,7 +14,7 @@
       <%= f.select :role, [['Согласовано', 1], ['Утверждаю', 2], ['Исполнитель', 3]] %>
     </p>
     <p>
-      <%= f.submit %><%= link_to '[X]', [@project, signer], method: 'delete', remote: true %>
+      <%= f.submit %><%= link_to 'Удалить', [@project, signer], method: 'delete', remote: true, class: 'icon icon-del' %>
     </p>
 <% end %>
 </div>

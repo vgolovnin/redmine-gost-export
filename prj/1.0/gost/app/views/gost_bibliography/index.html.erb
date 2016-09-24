@@ -1,15 +1,19 @@
+<div class="contextual">
+  <%= link_to 'Добавить', {action: 'new', remote: true}, {class: 'icon icon-add'} %>
+</div>
+
+
 <h3>Библиография</h3>
 <% @bibs.each do |bib| %>
   <p>
-      <%= bib %>
-    <% unless bib.id.nil? %>
+      <%= simple_format bib.to_s %>
+    <% if bib.persisted? %>
       <%= link_to 'Удалить', project_bibliography_path(@project, bib),
                   method: :delete, data: {confirm: 'sure?'}, class: 'icon icon-del' %>
     <% end %>
   </p>
 <% end %>
 
-<%= link_to '[+]', action: 'new' %>
 
 <% content_for :sidebar do %>
     <% render partial: 'gost_plugin/sidebar' %>

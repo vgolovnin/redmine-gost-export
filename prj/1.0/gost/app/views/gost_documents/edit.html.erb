@@ -14,6 +14,9 @@
       <p>
         Генерировать содержание <%= f.check_box :has_toc %>
       </p>
+      <p>
+        Генерировать библиографию <%= f.check_box :has_bibliography %>
+      </p>
 
       <p>
         Лист регистрации изменений <%= f.check_box :has_changeslist %>
@@ -27,7 +30,7 @@
       </p>
 
     <div style="clear: left;">
-      <%= f.submit %>
+      <%= f.submit 'Сохранить' %>
     </div>
 
 <% end %>

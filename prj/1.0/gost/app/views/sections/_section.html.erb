@@ -1,17 +1,26 @@
 <div class="gost_section">
 
-  <%= f.hidden_field :index %>
+  <%= f.hidden_field :index, class: 'gost_section_index' %>
   <% if f.object.parent.class == GostDocument %>
       <%= f.text_area :description %>
   <% end %>
 
   <div>
+    <% if depth == 1 %>
+    <%= f.text_field :title, size: 64%>
+    <% else %>
+        <div class="contextual">
+          <%= link_to(image_tag('edit.png'),  edit_project_gost_document_section_path(@project, @document, f.object)) %>
+        </div>
     <%= raw "<h#{depth} class='section_title'>#{f.object.title}</h#{depth}>" %>
-    <%= f.text_field :title, size: 64, style: "display: none" %>
+
+    <% end %>
+
   </div>
 
-  <div class="gost_section_contents">
+<div class="gost_section_contents">
 
+  <% if depth == 1 %>
 <p>
   <%= f.text_area :text, cols: '100', rows: '15', class: 'jsToolBar' %>
 </p>
@@ -22,7 +31,7 @@
     <%= link_to_attachments f.object %>
     <label><%=l(:label_attachment_plural)%></label><%= render :partial => 'attachments/form' %>
   </div>
-
+<% end %>
 
 
 <% if f.object.sections.any? %>

@@ -14,7 +14,7 @@ class GostInfoController < GostPluginController
     @info = @project.gost_info || GostInfo.new
     @info.update(params.require(:gost_info).permit!)
     @info.project_id = @project.id
-    @info.save ? flash[:notice] = 'Saved' : flash[:error] = 'Not saved'
+    @info.save ? flash[:notice] = 'Информация о проекте сохранена' : flash[:error] = 'Not saved'
     redirect_to action: 'edit'
   end
 end

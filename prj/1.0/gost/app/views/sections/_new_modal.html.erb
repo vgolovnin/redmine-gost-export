@@ -5,7 +5,9 @@
 
     <%= f.hidden_field :index %>
     <%= f.label :title %>
-    <%= f.text_field :title %>
-    Приложение <%= f.check_box :is_appendix %>
-    <%= f.submit %>
+    <%= f.text_field :title, style: 'width: 250px' %>
+    <% if @section.parent.class == GostDocument %>
+        <p>Приложение <%= f.check_box :is_appendix %></p>
+    <% end %>
+    <%= f.submit 'Создать' %>
 <% end %>

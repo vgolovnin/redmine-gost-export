@@ -17,13 +17,12 @@
           wikiToolbar.draw();
         });
 
-  });
 
-  $(function(){
-  $("a.section_edit_link").click(function(){
-    $(this).parent().hide();
-    $(this).parent().parent().find("input").show();
-    return false;
+  $('.gost_section_subsections').sortable({
+    update: function(e, ui){
+      ui.item.parent('.gost_section_subsections').find('> .gost_section').each(function(index, e) {
+        $(e).find('.gost_section_index').val(index);
+      })}
   });
   });
 </script>
@@ -32,13 +31,16 @@
   <%= link_to 'Создать подраздел', new_project_gost_document_section_path(@project, @document, parent_id: @section.id), remote: true, class: 'icon icon-add' %>
   <%= link_to 'Удалить раздел', [@project, @document, @section], method: 'delete', data: {confirm: 'sure?'}, class: 'icon icon-del' %>
 </div>
+<%= section_breadcrumbs(@section) %>
+
+<h3>Редактировать раздел</h3>
+
 <%= form_for [@project, @document, @section] do |section_form| %>
     <%= render partial: 'sections/section', locals: {f: section_form, depth: 1} %>
 
     <div style="clear:both">
 
-    <%= section_form.submit %>
-      <%= link_to 'К документу', project_gost_document_path(@project, @document) %>
+    <%= section_form.submit 'Сохранить' %>
     </div>
 <% end %>
 

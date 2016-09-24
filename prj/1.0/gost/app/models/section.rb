@@ -12,7 +12,8 @@ class Section < ActiveRecord::Base
   belongs_to :origin, class_name: 'Section'
 
   validates_presence_of :title
-  validates_uniqueness_of :index, scope: ['parent_id', 'parent_type', 'is_appendix']
+  #validates_uniqueness_of :index, scope: ['parent_id', 'parent_type', 'is_appendix']
+
 
   after_find :set_duplicate
   before_save :set_origin
@@ -67,13 +68,24 @@ class Section < ActiveRecord::Base
 
   def set_duplicate
     if self.origin
+
+      if self.origin.helper.present?
+      helper_fields = {name: self.origin.helper.name, settings: self.origin.helper.settings}
+
+      if self.helper.nil?
+        self.create_helper(helper_fields)
+      else
+        self.helper.update(helper_fields)
+      end
+      end
+
       self.text = self.origin.text
       self.save
     end
   end
 
   def set_origin
-    if self.origin
+    if self.origin and self.text.present?
       self.origin.text = self.text
       self.origin.save
     end

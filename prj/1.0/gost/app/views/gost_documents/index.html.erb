@@ -7,9 +7,7 @@
 <h3>Документация</h3>
 
 <% @documents.each do |document|  %>
-<p><h4><%= link_to document.title, project_gost_document_path(@project, document) %></h4>
-  <%= link_to '[Export]',  export_project_gost_document_path(@project, document) %>
-</p>
+<h4><%= link_to document.title, project_gost_document_path(@project, document) %></h4>
 <% end %>
 </div>
 

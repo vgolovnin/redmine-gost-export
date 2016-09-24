@@ -4,7 +4,13 @@ class SectionDuplicatesController < GostPluginController
     @documents = @project.gost_documents
     @document = GostDocument.find(params[:gost_document_id])
     @duplicate = @document.nested_section(params[:section_id])
-    render 'new', layout: false
+
+    if @duplicate.origin.present?
+      @origin = @duplicate.origin
+      render 'show', layout: false
+    else
+      render 'new', layout: false
+    end
   end
 
   def create
@@ -15,7 +21,7 @@ class SectionDuplicatesController < GostPluginController
       flash[:error] = "Нельзя связать раздел сам с собой"
     else
       @origin = Section.find(params[:origin_id])
-      @section.origin_id = @origin.id
+      @origin.duplicates << @section
       if @section.save
         flash[:notice] = "Разделы связаны"
       else
@@ -26,6 +32,11 @@ class SectionDuplicatesController < GostPluginController
   end
 
   def destroy
-
+    @documents = @project.gost_documents
+    @document = GostDocument.find(params[:gost_document_id])
+    @duplicate = @document.nested_section(params[:section_id])
+    @duplicate.origin = nil
+    @duplicate.save
+    render js: 'hideModal();'
   end
 end

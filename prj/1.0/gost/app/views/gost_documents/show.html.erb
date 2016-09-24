@@ -1,15 +1,31 @@
 <div class="contextual">
+  <%= link_to image_tag('files/pdf.png') +' Экспорт' , export_project_gost_document_path(@project, @document) %>
+  <%= link_to image_tag('changeset.png') + ' Параметры',  edit_project_gost_document_path(@project, @document) %>
   <%= link_to 'Создать раздел', new_project_gost_document_section_path(@project, @document), remote: true, class: 'icon icon-add' %>
-  <%= link_to 'Редактировать параметры документа',  edit_project_gost_document_path(@project, @document), class: 'icon icon-edit' %>
   <%= link_to 'Удалить', [@project, @document], method: 'delete', data: {confirm: 'sure?'}, class: 'icon icon-del' %>
 </div>
 
 <h1><%= @document.title %></h1>
 <%= @document.description %>
 
+<script type="text/javascript" charset="utf-8">
+$(function(){
+  $('.document_sections').sortable({
+  update: function(e, ui){
+    ui.item.parent('.gost_section_subsections').find('> .gost_section').each(function(index, e) {
+      $(e).find('.gost_section_index').val(index);
+    })}
+});
+});
+</script>
+
+<div class="document_sections">
 <% @document.sections.each_with_index  do |section, index| %>
+      <div class="gost_section">
     <%= render partial: 'show_section', locals: {section: section, theindex: "#{index+1}.", level: 2} %>
+      </div>
 <% end %>
+</div>
 
 <% content_for :sidebar do %>
     <% render partial: 'gost_plugin/sidebar' %>

@@ -7,14 +7,14 @@ class GostDocumentsController < GostPluginController
   end
 
   def new
-    @templates = templates
+    @templates = GostDocument.templates
     respond_to do |format|
       format.js
     end
   end
 
   def create
-    @templates = templates
+    @templates = GostDocument.templates
     if params[:template].present?
       template_index = params[:template].to_i
       render_404 if template_index >= @templates.size || template_index < 0
@@ -42,7 +42,7 @@ class GostDocumentsController < GostPluginController
     @document = @project.gost_documents.find(params[:id])
     @document.update(params.require(:gost_document).permit!)
     @document.save || flash[:error] = 'Not saved'
-    redirect_to action: 'edit'
+    redirect_to action: 'index'
   end
 
   def export
@@ -50,7 +50,7 @@ class GostDocumentsController < GostPluginController
     @info = @project.gost_info
     @bibs = GostBibliographicReference.get_bibliography @project
     if @info.nil? or not Signer.all_set_for_project(@project)
-      flash[:error] = "Необходимо задать информацию о проекте и подписывающие лица"
+      flash[:error] = "Не задана информация о проекте"
       redirect_to action: 'index'
     else
 
@@ -60,14 +60,9 @@ class GostDocumentsController < GostPluginController
       if errors.any?
         render plain: "Ошибки при сборке:\n" + errors.join("\n")
       else
-        send_file pdf, disposition: 'inline'
+        send_file pdf,  disposition: 'inline', filename:"#{@info.title}. #{@document.title}.pdf"
       end
     end
   end
 
-  private
-
-  def templates
-    YAML.load_file("#{Rails.root}/plugins/gost/config/data/documents_templates.yml")['templates']
-  end
 end

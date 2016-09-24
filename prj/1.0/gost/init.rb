@@ -1,7 +1,7 @@
 Redmine::Plugin.register :gost do
   name 'Gost Export Plugin'
   author 'Victor Golovnin'
-  description 'This is a GOST documentation plugin for Redmine'
+  description 'Плагин для подготовки документации в соответствии с ГОСТ ЕСПД'
   version '1.0.0'
 
 

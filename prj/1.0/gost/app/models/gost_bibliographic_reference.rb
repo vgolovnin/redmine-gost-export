@@ -8,7 +8,7 @@ class GostBibliographicReference < ActiveRecord::Base
   end
 
   after_find do
-    self.rbo = BibTeX::Entry.parse(self.text)
+    self.rbo = BibTeX::Entry.parse(self.text)[0]
   end
 
   def to_s
@@ -16,12 +16,12 @@ class GostBibliographicReference < ActiveRecord::Base
   end
 
   def self.uspd
-     BibTeX.open("#{Rails.root}/plugins/gost/config/data/gost.bib")
+    @uspd ||= BibTeX.open("#{Rails.root}/plugins/gost/config/data/gost.bib")
   end
 
   def self.get(project)
     bibs = GostBibliographicReference.uspd
-    bibs.map do |bib|
+    bibs = bibs.map do |bib|
       self.new(text: bib.to_s, rbo: bib)
     end
     GostBibliographicReference.where(project_id: project.id).all.each do |e|

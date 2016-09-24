@@ -1,9 +1,12 @@
-<% section.attachments.each { |attachment|
-FileUtils.cp attachment.diskfile, File.join(pwd, attachment.filename)
+<%
+  files = []
+  section.attachments.each { |attachment|
+      files << {filename: attachment.filename, title: attachment.description}
+      FileUtils.cp attachment.diskfile, File.join(pwd, attachment.filename)
 }
 %>
-<%= raw latex(section.text) %>
+<%= raw latex(section.text, files: files) %>
 <% if section.helper %>
-<%= raw latex render partial: "export/#{section.helper.name}", locals: {settings: section.helper.settings} %>
+<%= raw latex render partial: "export/helpers/#{section.helper.name}", locals: {settings: section.helper.settings} %>
 <% end %>
 
