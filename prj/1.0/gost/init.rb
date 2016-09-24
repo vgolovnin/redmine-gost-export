@@ -1,7 +1,7 @@
 Redmine::Plugin.register :gost do
   name 'Gost Export Plugin'
   author 'Victor Golovnin'
-  description 'Плагин для подготовки документации в соответствии с ГОСТ ЕСПД'
+  description "Плагин для подготовки документации в соответствии с ГОСТ ЕСПД"
   version '1.0.0'
 
 
@@ -17,7 +17,7 @@ Redmine::Plugin.register :gost do
         sections: [:edit, :update]
     }
   end
-  menu :project_menu, :gost_documents, {controller: 'gost_documents', action: 'index'}, caption: 'Документация ГОСТ', param: :project_id
+  menu :project_menu, :gost_documents, {controller: 'gost_documents', action: 'index'}, caption: "Документация ГОСТ", param: :project_id
 
   module ProjectGostPatch
     def self.included(base)
