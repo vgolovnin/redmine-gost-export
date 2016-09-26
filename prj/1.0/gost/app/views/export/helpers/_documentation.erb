@@ -1,4 +1,4 @@
-<% if settings[:documentation_codes] %>
+<% unless settings.nil? or settings[:documentation_codes].nil? %>
 <% settings[:documentation_codes].each do |code| %>
 <% document = GostDocument.templates.find {|t| t['document_code'].to_s == code} %>
 # «<%= @info.title %>». <%= document['name'] %>

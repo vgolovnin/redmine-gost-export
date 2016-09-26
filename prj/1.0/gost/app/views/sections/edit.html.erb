@@ -28,7 +28,9 @@
 </script>
 
 <div class="contextual">
+  <% unless @section.is_appendix %>
   <%= link_to 'Создать подраздел', new_project_gost_document_section_path(@project, @document, parent_id: @section.id), remote: true, class: 'icon icon-add' %>
+  <% end %>
   <%= link_to 'Удалить раздел', [@project, @document, @section], method: 'delete', data: {confirm: 'sure?'}, class: 'icon icon-del' %>
 </div>
 <%= section_breadcrumbs(@section) %>

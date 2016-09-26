@@ -35,7 +35,7 @@
 \gappto\captionsrussian{\renewcommand{\figurename}{Рисунок}}
 \captionsetup{labelsep=period}
 
-\bibliographystyle{ugost2008}
+\bibliographystyle{ugost2008s}
 
 \def\ps@uspd{
   \def\@oddfoot{\vbox{\editboxm{\rightmark}}}
@@ -118,7 +118,7 @@
 \vskip 5em
 
 \makeatletter
-\large\textbf{\@project}
+\large\@project
 \vskip 1em
 \large\textbf{\@title}
 \makeatother
@@ -132,15 +132,13 @@
 \textbf{{{#1} 01-1-ЛУ}}
 
 \textbf{\pagesfield{endlu}}
-
-\vskip 2em
-
+\vskip 1em
 \begin{flushright}
 \@performer
 \end{flushright}
 
 \vfill
-\textbf{\@organizationlocation~{{\number\year}}}
+\number\year
 \end{center}
 \label{endlu}
 }
@@ -154,7 +152,7 @@
 \vskip 7em
 
 \begin{center}
-\large\textbf{\@project}
+\large\@project
 \vskip 1em
 \large\textbf{\@title}
 \vskip 1em
@@ -162,7 +160,7 @@
 \vskip 1em
 \textbf{\pagesfield{enddoc}}
 \vfill
-\textbf{\@organizationlocation~{{\number\year}}}
+\number\year
 \end{center}
 }}
 }
@@ -173,7 +171,6 @@
 
 \newcommand\UspdChangesList{{
 \newpage
-\thispagestyle{empty}
 \noindent\begin{picture}(185,247)(0,0)
 \put(0,0){\line(0,1){247}}
 \put(8,0){\line(0,1){232}}
@@ -202,7 +199,7 @@
 \put(89,232){\parbox[t]{18mm}{\small Всего листов (страниц) в докум}}
 \put(109,232){\parbox[t]{23mm}{\small {№} документа}}
 \put(134,232){\parbox[t]{23mm}{\small Входящий {№} сопроводительного докум и дата}}
-\put(159,232){\parbox[t]{13mm}{\small Подп}}
+\put(159,232){\parbox[t]{13mm}{\small Подп.}}
 \put(174,232){\parbox[t]{10mm}{\small Дата}}
 \label{enddoc}
 \addcontentsline{toc}{section}{Лист регистрации изменений}
@@ -226,7 +223,7 @@
 <% end %>
 <% if @document.has_toc %>
 \tableofcontents\newpage
-<% end %>}{<% if @document.has_changeslist %>\UspdChangesList<% end %>}
+<% end %>}{<% if @document.has_changeslist %>\UspdChangesList<% end %>\vfill}
 \makeatother
 \end{filecontents}
 
@@ -246,17 +243,15 @@ inputencoding=utf8x,
 basicstyle=\small\ttfamily,
 columns=flexible,
 breaklines=true,
-extendedchars=false,
+extendedchars=\true,
 keepspaces = true
 }
-
 
 \setdefaultlanguage{russian}
 \PolyglossiaSetup{russian}{indentfirst=true}
 \setotherlanguages{english}
 
 \usepackage{uspd}
-
 
 \begin{document}
 \sloppy
@@ -274,14 +269,22 @@ performer = @info.signers.performer
 \approved{<%= latex approved.position %>}{<%= latex approved.name %>}
 \performer{<%= latex performer.position %>}{<%= latex performer.name %>}
 \title{<%= @document.title %>}
+\hypersetup{pdftitle={<%= latex "#{@info.title}. #{@document.title}" %>}}
+
 \begin{uspd}{<%= latex "#{@info.country_code}.#{@info.organization_code}.#{@info.okp_code}-01 #{@document.document_code}" %>}
 
+<% pwd = Dir.pwd %>
 <%= render partial: 'export/sections', locals: {sections: @document.sections.main, level: 1, pwd: @directory} %>
+<% Dir.chdir pwd %>
 <% if @document.has_bibliography %>\bibliography{uspd}<% end %>
 
 <% if @document.sections.appendixes.any? %>
 \let\section\stdsection
-  <%= render partial: 'export/appendix', collection: @document.sections.appendixes %>
+<% @document.sections.appendixes.each_with_index do |appendix, index| %>
+  <% File.write("appendix_#{index}.tex",
+  render(partial: 'export/appendix', locals: {appendix: appendix, pwd: pwd, index: @document.sections.appendixes.size > 1 ? index + 1 : 0})) %>
+\subimport*{./}{<%="appendix_#{index}" %>}
+<% end %>
 <% end %>
 \end{uspd}
 \end{document}

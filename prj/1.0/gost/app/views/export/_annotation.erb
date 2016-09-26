@@ -4,7 +4,7 @@
 <%= @document.sections.main.map {|s| "«#{s.title}»"}.join(', ') %>
 <% if @document.sections.appendixes.any? %>и приложения<% end %>.
 
-<% @document.sections.each do |section|%>
+<% @document.sections.main.each do |section|%>
   <% unless section.description.nil? %>
     <%= section.description %>
   <% end %>
@@ -17,3 +17,9 @@
 <% end %>
 
 Изменения к данному документу оформляются согласно ГОСТ 19.603-78 {{cite(gost603)}}, ГОСТ 19.604-78 {{cite(gost604)}}.
+
+<% @document.sections.appendixes.each do |section|%>
+    <% unless section.description.nil? %>
+        <%= section.description %>
+    <% end %>
+<% end %>

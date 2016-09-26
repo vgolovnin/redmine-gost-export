@@ -1,4 +1,4 @@
-<%=raw "<h#{level}> #{section.title}" %>
+<%=raw "<h#{level}>#{(section.is_appendix ? "Приложение " : "")} #{section.title}" %>
 <%= link_to image_tag(section.helper.nil? ? 'edit.png' : 'changeset.png'), edit_project_gost_document_section_path(@project, @document, section) %>
 <%=raw "</h#{level}>"%>
 
