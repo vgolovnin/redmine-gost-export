@@ -2,11 +2,11 @@
 
 <%= form_for [@project, signer], method: 'patch', remote: true do |f| %>
   <p>
-    <%= f.label :name %>
+    <%= f.label :name, 'Фамилия, инициалы' %>
     <%= f.text_field :name %>
   </p>
    <p>
-     <%= f.label :position %>
+     <%= f.label :position, 'Должность' %>
      <%= f.text_area :position %>
    </p>
     <p>

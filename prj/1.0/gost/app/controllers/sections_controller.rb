@@ -42,11 +42,6 @@ class SectionsController < GostPluginController
     @section.update(params.require(:section).permit!)
 
     Attachment.attach_files(@section, params[:attachments])
-
-    if @section.helper.present?
-      @section.helper.update(settings: helper_settings_list(@section.helper.name))
-    end
-
     redirect_to action: 'edit'
   end
 
@@ -62,16 +57,5 @@ class SectionsController < GostPluginController
       redirect_to edit_project_gost_document_section_path(@project, @document, @parent)
     end
 
-  end
-
-  private
-
-  def helper_settings_list(name)
-    case name
-      when 'functional_requirments'
-        {issue_category_ids: params[:issue_category_ids]}
-      when 'documentation'
-        {documentation_codes: params[:documentation_codes]}
-    end
   end
 end

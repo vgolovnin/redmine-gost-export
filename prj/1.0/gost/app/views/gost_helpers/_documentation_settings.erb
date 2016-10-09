@@ -1,9 +1,0 @@
-Выберите программные документы
-
-<div>
-
-  <% codes =  GostDocument.templates.map {|t| [t['name'], t['document_code']]} %>
-  <%= select_tag :documentation_codes,
-                 options_for_select(codes,
-                                                    settings ? settings[:documentation_codes] : []), multiple: true %>
-</div>

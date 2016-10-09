@@ -6,7 +6,3 @@
 }
 %>
 <%= raw latex(section.text, files: files) %>
-<% if section.helper %>
-<%= raw latex render partial: "export/helpers/#{section.helper.name}", locals: {settings: section.helper.settings} %>
-<% end %>
-

@@ -1,13 +1,13 @@
 <%= @document.description %>
-
+<% unless @document.document_gost.to_i == 401 %>
 Документ <%= @document.title %> содержит следующие разделы:
-<%= @document.sections.main.map {|s| "«#{s.title}»"}.join(', ') %>
-<% if @document.sections.appendixes.any? %>и приложения<% end %>.
+<%= @document.sections.main.map {|s| "«#{s.title}»"}.join(', ') %><% if @document.sections.appendixes.any? %>и приложения<% end %>.
 
 <% @document.sections.main.each do |section|%>
   <% unless section.description.nil? %>
     <%= section.description %>
   <% end %>
+<% end %>
 <% end %>
 
 Настоящий документ разработан в соответствии с требованиями:

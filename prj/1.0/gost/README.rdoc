@@ -1,3 +1,0 @@
-= gost_plugin
-
-Redmine plugin for creating GOST documentation

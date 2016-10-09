@@ -7,6 +7,8 @@ class CreateGostDocuments < ActiveRecord::Migration
       t.string :document_code
       t.string :document_gost
       t.text :description
+      t.boolean :has_bibliography, default: true
+      t.boolean :has_toc
       t.references :project, index: true, foreign_key: true
     end
   end
