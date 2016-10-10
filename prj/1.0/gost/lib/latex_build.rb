@@ -5,7 +5,7 @@ class LatexBuild
 
      def latex(text, options = {})
        rules = [:code_file, :code_repo, :cite, :label, :ref, :gost_macros]
-       rules << :no_headers unless options[:headers]
+      # rules << :no_headers unless options[:headers]
        rc = RedCloth::TextileDoc.new(text || '', [:filter_html])
        rc.files = options[:files] || []
        rc.project = @project
@@ -19,7 +19,6 @@ class LatexBuild
      include RedCloth::Formatters::LATEX
 
      def image(opts)
-       # Don't know how to use remote links, plus can we trust them?
        return "" if opts[:src] =~ /^\w+\:\/\//
        img = self.files.find {|i| i[:filename] == opts[:src]}
        return '' unless img
@@ -114,7 +113,7 @@ class LatexBuild
          return $0 unless self.files.find{|f| f[:filename] == codefile}
          out = '<notextile>'
        #  out << "\\begin{verbatim}"
-         out << "\\verbatiminput{#{codefile}}"
+         out << "\\lstinputlisting{#{codefile}}"
         # out << "\\end{verbatim}"
          out << '</notextile>'
        end
