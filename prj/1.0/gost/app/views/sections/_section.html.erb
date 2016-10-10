@@ -24,9 +24,7 @@
 <p>
   <%= f.text_area :text, cols: '100', rows: '15', class: 'jsToolBar' %>
 </p>
-<% unless f.object.helper.nil?  %>
-      <%= render partial: "gost_helpers/#{f.object.helper.name}_settings", locals: {settings: f.object.helper.settings} %>
-<% end %>
+
   <div class="gost_section_attachments">
     <%= link_to_attachments f.object %>
     <label><%=l(:label_attachment_plural)%></label><%= render :partial => 'attachments/form' %>

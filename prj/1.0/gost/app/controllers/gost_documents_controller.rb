@@ -1,6 +1,11 @@
 class GostDocumentsController < GostPluginController
   menu_item :gost_documents
 
+  rescue_from (Errno::ENOENT) do |e|
+    flash[:error] = "Не удалось запустить latex-сборку"
+    redirect_to :back
+  end
+
   helper :attachments
   def index
     @documents = @project.gost_documents
@@ -58,7 +63,8 @@ class GostDocumentsController < GostPluginController
       pdf = builder.build(@document)
       errors = builder.errors
       if errors.any?
-        render plain: "Ошибки при сборке:\n" + errors.join("\n")
+        flash[:error] = "Ошибки при сборке:\n" + errors.join("\n")
+        redirect_to :back
       else
         send_file pdf,  disposition: 'inline', filename:"#{@info.title}. #{@document.title}.pdf"
       end

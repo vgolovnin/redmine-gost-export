@@ -20,11 +20,11 @@
 \evensidemargin=0mm
 \oddsidemargin=0mm
 \topmargin=0mm
-\headheight=15mm
+
 \headsep=5mm
 \textwidth=180mm
 \textheight=247mm
-\footskip=15mm
+\footskip=12mm
 \setlength{\unitlength}{1mm}
 \setlength{\parindent}{15mm}
 \setlist{nolistsep}
@@ -43,6 +43,11 @@
     \vbox{\vbox{\hfil\textbf{\thepage}\hfil}
     {\vskip 5mm}
     \vbox{\hfil\textbf{\rightmark~01-1}\hfil}}}}
+
+\def\ps@uspdhead{
+  \def\@oddfoot{\hfil\number\year\hfil}
+  \def\@oddhead{}}
+
 
 \let\stdsection\section
 \renewcommand\section{\newpage\stdsection}
@@ -103,7 +108,7 @@
 \end{center}
 }}
 
-\newcommand\UspdApprovalPage[1]{\thispagestyle{empty}\editbox{
+\newcommand\UspdApprovalPage[1]{\thispagestyle{uspdhead}\editbox{
 <% if @info.special_mark.present? %>
 \noindent\begin{picture}(0,0)
 \put(100, 10){\makebox[70mm][r]{<%= latex @info.special_mark %>}}
@@ -114,36 +119,27 @@
 \@organizationunit \\
 
 \makebox[\linewidth]{\@agreed\@approved}
-
-\vskip 5em
-
+\vskip 3em
 \makeatletter
-\large\@project
+\large\textbf{\@project}
 \vskip 1em
 \large\textbf{\@title}
 \makeatother
-
 \vskip 1.5em
-
 {\large \textbf{ЛИСТ УТВЕРЖДЕНИЯ}}
-
 \vskip 1em
-
 \textbf{{{#1} 01-1-ЛУ}}
-
 \textbf{\pagesfield{endlu}}
 \vskip 1em
 \begin{flushright}
 \@performer
 \end{flushright}
 
-\vfill
-\number\year
 \end{center}
 \label{endlu}
 }
 
-\newcommand\UspdTitlePage[1]{{\setcounter{page}{1}\thispagestyle{empty}\editbox{
+\newcommand\UspdTitlePage[1]{{\setcounter{page}{1}\thispagestyle{uspdhead}\editbox{
 
 {УТВЕРЖДЕНО}
 
@@ -152,15 +148,13 @@
 \vskip 7em
 
 \begin{center}
-\large\@project
+\large\textbf{\@project}
 \vskip 1em
 \large\textbf{\@title}
 \vskip 1em
 \textbf{{{#1}}}
 \vskip 1em
 \textbf{\pagesfield{enddoc}}
-\vfill
-\number\year
 \end{center}
 }}
 }
@@ -218,6 +212,7 @@
 \newcommand{\organizationunit}[1]{\def\@organizationunit{#1}}
 \newcommand{\organizationlocation}[1]{\def\@organizationlocation{#1}}
 \newenvironment{uspd}[1]{\sloppy\UspdApprovalPage{#1}\UspdTitlePage{#1}
+\headheight=15mm
 <% if @document.has_annotation %>
 \section*{АННОТАЦИЯ}{\@abstracts}\newpage
 <% end %>
@@ -258,7 +253,6 @@ keepspaces = true
 \project{\MakeUppercase{<%= latex @info.title %>}}
 \organization{<%= latex @info.organization %>}
 \organizationunit{<%= latex @info.organization_unit %>}
-\organizationlocation{<%= latex @info.location %>}
 \abstracts{<%= latex(render partial: 'export/annotation') %>}
 <%
 agreed = @info.signers.agreed
@@ -268,7 +262,7 @@ performer = @info.signers.performer
 \agreed{<%= latex agreed.position %>}{<%= latex agreed.name %>}
 \approved{<%= latex approved.position %>}{<%= latex approved.name %>}
 \performer{<%= latex performer.position %>}{<%= latex performer.name %>}
-\title{<%= @document.title %>}
+\title{<%= latex @document.title %>}
 \hypersetup{pdftitle={<%= latex "#{@info.title}. #{@document.title}" %>}}
 
 \begin{uspd}{<%= latex "#{@info.country_code}.#{@info.organization_code}.#{@info.okp_code}-01 #{@document.document_code}" %>}

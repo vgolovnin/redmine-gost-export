@@ -1,5 +1,5 @@
 <%=raw "<h#{level}>#{(section.is_appendix ? "Приложение " : "")} #{section.title}" %>
-<%= link_to image_tag(section.helper.nil? ? 'edit.png' : 'changeset.png'), edit_project_gost_document_section_path(@project, @document, section) %>
+<%= link_to image_tag('edit.png'), edit_project_gost_document_section_path(@project, @document, section) %>
 <%=raw "</h#{level}>"%>
 
 <% section.sections.each_with_index  do |subsection, index| %>

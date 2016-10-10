@@ -1,6 +1,0 @@
-<% unless settings.nil? or settings[:issue_category_ids].nil?
-IssueCategory.find(settings[:issue_category_ids]).map{|c| c.issues.where(parent: nil)}
-           .flatten.each do |issue| %><%= render partial: 'export/issue', locals: {issue: issue, level: 1} %><% end
-else %>
-Категории задач не выбраны
-<% end %>

@@ -6,15 +6,12 @@ class GostDocument < ActiveRecord::Base
 
   def nested_section(id)
     section = Section.find(id)
-
     elem = section
     loop do
       break if elem.parent_type == 'GostDocument'
       elem = elem.parent
     end
-
     elem.parent.id == self.id ? section : nil
-
   end
 
   def use_template(template)
@@ -27,7 +24,6 @@ class GostDocument < ActiveRecord::Base
     self.sections = Section.load_sections(template['sections'])
     self
   end
-
 
   def self.templates
     @templates ||= YAML.load_file("#{Rails.root}/plugins/gost/config/data/documents_templates.yml")['templates']

@@ -1,6 +1,5 @@
 class GostBibliographicReference < ActiveRecord::Base
   belongs_to :project
-
   attr_accessor :rbo
 
   before_save do
@@ -30,8 +29,6 @@ class GostBibliographicReference < ActiveRecord::Base
     bibs
   end
 
-
-
   def self.get_bibliography(project)
     bibs = GostBibliographicReference.uspd
     GostBibliographicReference.where(project_id: project.id).all.each do |e| #fixme
@@ -39,5 +36,4 @@ class GostBibliographicReference < ActiveRecord::Base
     end
     bibs
   end
-
 end

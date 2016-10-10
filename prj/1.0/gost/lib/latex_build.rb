@@ -185,10 +185,12 @@ class LatexBuild
           @errors << line
         end
      end
+     rescue Errno::ENOENT => e
+      raise
      rescue StandardError => e
       @errors << e
      ensure
-       f.close
+       f.close unless f.nil?
       Dir.chdir pwd
      end
      File.join(directory, "#{document.id}.pdf")
