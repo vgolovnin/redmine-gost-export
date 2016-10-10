@@ -128,9 +128,9 @@ class LatexBuild
          filecontent = Redmine::CodesetUtil.to_utf8_by_setting(repository.cat(filename))
          return $0 unless filecontent
          out = '<notextile>'
-           out << "\\begin{lstlisting}"
+           out << "\\begin{lstlisting}\n"
          out << filecontent
-          out << "\\end{lstlisting}"
+          out << "\\end{lstlisting}\n\n"
          out << '</notextile>'
        end
      end
