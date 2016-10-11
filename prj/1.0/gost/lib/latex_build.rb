@@ -112,9 +112,7 @@ class LatexBuild
          codefile = $1
          return $0 unless self.files.find{|f| f[:filename] == codefile}
          out = '<notextile>'
-       #  out << "\\begin{verbatim}"
          out << "\\lstinputlisting{#{codefile}}"
-        # out << "\\end{verbatim}"
          out << '</notextile>'
        end
      end
