@@ -2,6 +2,8 @@ class GostBibliographicReference < ActiveRecord::Base
   belongs_to :project
   attr_accessor :rbo
 
+  scope :persisted, -> {where("id IS NOT NULL")}
+
   before_save do
     self.text = self.rbo.to_s
   end
@@ -21,9 +23,9 @@ class GostBibliographicReference < ActiveRecord::Base
   def self.get(project)
     bibs = GostBibliographicReference.uspd
     bibs = bibs.map do |bib|
-      self.new(text: bib.to_s, rbo: bib)
+      self.new(id: nil, text: bib.to_s, rbo: bib)
     end
-    GostBibliographicReference.where(project_id: project.id).all.each do |e|
+    project.bibliographiс_references.persisted.each do |e|
       bibs << e
     end
     bibs
@@ -31,7 +33,7 @@ class GostBibliographicReference < ActiveRecord::Base
 
   def self.get_bibliography(project)
     bibs = GostBibliographicReference.uspd
-    GostBibliographicReference.where(project_id: project.id).all.each do |e| #fixme
+    project.bibliographiс_references.persisted.each do |e|
       bibs << e.rbo
     end
     bibs

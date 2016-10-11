@@ -12,8 +12,8 @@
 
 Настоящий документ разработан в соответствии с требованиями:
 <% (101..106).to_a.push(@document.document_gost.to_i).each do |gost| %>
-  <%  gost = 'gost' + gost.to_s %>
-  <%= "# #{@bibs[gost].title} {{cite(#{gost})}}" %>
+  <%  gostref = @bibs.find {|bib| bib.rbo.id == 'gost' + gost.to_s}   %>
+  <%= "# #{gostref.rbo.title} {{cite(gost#{gost.to_s})}}" %>
 <% end %>
 
 Изменения к данному документу оформляются согласно ГОСТ 19.603-78 {{cite(gost603)}}, ГОСТ 19.604-78 {{cite(gost604)}}.

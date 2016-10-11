@@ -1,6 +1,7 @@
 <% if @document.has_bibliography %>
 \begin{filecontents}{uspd.bib}
-<%= @bibs.map(&:to_s).join("\n") %>
+<% biblist = @bibs.map {|bib| bib.rbo.to_s} %>
+<%= biblist.join("\n") %>
 \end{filecontents}
 <% end %>
 \begin{filecontents}{uspd.sty}
@@ -238,7 +239,7 @@ inputencoding=utf8x,
 basicstyle=\small\ttfamily,
 columns=flexible,
 breaklines=true,
-extendedchars=\true,
+extendedchars=false,
 keepspaces = true
 }
 

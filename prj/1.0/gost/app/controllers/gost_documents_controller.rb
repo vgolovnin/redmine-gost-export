@@ -53,7 +53,7 @@ class GostDocumentsController < GostPluginController
   def export
     @document = @project.gost_documents.find(params[:id])
     @info = @project.gost_info
-    @bibs = GostBibliographicReference.get_bibliography @project
+    @bibs = GostBibliographicReference.get @project
     if @info.nil? or not Signer.all_set_for_project(@project)
       flash[:error] = "Не задана информация о проекте"
       redirect_to action: 'index'
