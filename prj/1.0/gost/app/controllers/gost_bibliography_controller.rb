@@ -4,10 +4,13 @@ class GostBibliographyController < GostPluginController
   def index
     @bibs = GostBibliographicReference.get @project
 
-     render json: @bibs.map{|bib| {
+    respond_to do |format|
+      format.html
+      format.json {render json: @bibs.map{|bib| {
           id:  bib.rbo.id,
           title: bib.rbo.title
-      }}
+      }}}
+    end
   end
 
   def new
