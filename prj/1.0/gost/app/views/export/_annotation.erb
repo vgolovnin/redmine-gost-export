@@ -11,8 +11,10 @@
 <% end %>
 
 Настоящий документ разработан в соответствии с требованиями:
-<% (101..106).to_a.push(@document.document_gost.to_i).each do |gost| %>
-  <%  gostref = @bibs.find {|bib| bib.rbo.id == 'gost' + gost.to_s}   %>
+<% gosts = (101..106).to_a
+   gosts.push(@document.document_gost.to_i) unless @document.document_gost.to_i.zero?
+       gosts.each do |gost| %>
+<%  gostref = @bibs.find {|bib| bib.rbo.id == 'gost' + gost.to_s} %>
   <%= "# #{gostref.rbo.title} {{cite(gost#{gost.to_s})}}" %>
 <% end %>
 
