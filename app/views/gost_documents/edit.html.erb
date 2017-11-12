@@ -8,7 +8,10 @@
         Код вида документа: <%= f.text_field :document_code, size: 2%>
       </p>
       <p>
-        Генерировать лист утверждения TODO  # f.check_box :has_annotation
+        Генерировать лист утверждения <%= f.check_box :has_approvepage %>
+      </p>
+      <p>
+        Генерировать титульный лист <%= f.check_box :has_titlepage %>
       </p>
       <p>
         Генерировать аннотацию <%= f.check_box :has_annotation %>
