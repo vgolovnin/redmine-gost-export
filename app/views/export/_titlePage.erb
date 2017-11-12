@@ -1,0 +1,28 @@
+{\setcounter{page}{1}\thispagestyle{uspdhead}\editbox{
+
+\makeatletter  
+<% if not @document.has_approvepage and @info.special_mark.present? %>  
+\noindent\begin{picture}(0,0)  
+\put(100, 10){\makebox[70mm][r]{<%= latex @info.special_mark %>}}  
+\end{picture}  
+<% end %>  
+ 
+<% if @document.has_approvepage %> 
+{УТВЕРЖДЕНО} 
+ 
+{{#1} 01-1-ЛУ} 
+<% end %> 
+\vskip 7em
+
+\begin{center}
+\large\textbf{\@project}
+\vskip 1em
+\large\textbf{\@title}
+\vskip 1em
+\textbf{{{#1}}}
+\vskip 1em
+\textbf{\pagesfield{enddoc}}
+\end{center}
+}
+
+}

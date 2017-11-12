@@ -113,100 +113,16 @@ ref=см. пункт \arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enu
 }}
 
 \newcommand\UspdApprovalPage[1]{
-% if @document.has_approval_page
-\thispagestyle{uspdhead}
-\editbox{
-\begin{center}
-\textbf{\@organization} \\
-\@organizationunit \\
-
-\makebox[\linewidth]{\@agreed\@approved}
-\vskip 3em
-\makeatletter
-\large\textbf{\@project}
-\vskip 1em
-\large\textbf{\@title}
-\makeatother
-\vskip 1.5em
-{\large \textbf{ЛИСТ УТВЕРЖДЕНИЯ}}
-\vskip 1em
-\textbf{{{#1} 01-1-ЛУ}}
-\textbf{\pagesfield{endlu}}
-\vskip 1em
-\begin{flushright}
-\@performer
-\end{flushright}
-
-\end{center}
-\label{endlu}
+<%= render partial: 'export/approval' %>
 }
 
-\newcommand\UspdTitlePage[1]{{\setcounter{page}{1}\thispagestyle{uspdhead}\editbox{
-\makeatletter
-<% if @info.special_mark.present? %>
-\noindent\begin{picture}(0,0)
-\put(100, 10){\makebox[70mm][r]{<%= latex @info.special_mark %>}}
-\end{picture}
-<% end %>
-{УТВЕРЖДЕНО}
-
-{{#1} 01-1-ЛУ}
-
-\vskip 7em
-
-\begin{center}
-\large\textbf{\@project}
-\vskip 1em
-\large\textbf{\@title}
-\vskip 1em
-\textbf{{{#1}}}
-\vskip 1em
-\textbf{\pagesfield{enddoc}}
-\end{center}
-}}
-}
-\renewcommand{\rightmark}{#1}
-\pagestyle{uspd}
-\newpage
+\newcommand\UspdTitlePage[1]{
+<%= render partial: 'export/titlePage' %>
 }
 
-\newcommand\UspdChangesList{{
-% \newpage
-% \noindent\begin{picture}(185,247)(0,0)
-% \put(0,0){\line(0,1){247}}
-% \put(8,0){\line(0,1){232}}
-% \put(28,0){\line(0,1){232}}
-% \put(48,0){\line(0,1){232}}
-% \put(68,0){\line(0,1){232}}
-% \put(88,0){\line(0,1){237}}
-% \put(108,0){\line(0,1){237}}
-% \put(133,0){\line(0,1){237}}
-% \put(158,0){\line(0,1){237}}
-% \put(173,0){\line(0,1){237}}
-% \put(185,0){\line(0,1){247}}
-% \put(0,247){\line(1,0){185}}
-% \put(0,237){\line(1,0){185}}
-% \put(0,232){\line(1,0){88}}
-% \put(0,212){\line(1,0){185}}
-% \put(0,0){\line(1,0){185}}
-% \multiput(0,207)(0,-5){41}{\line(1,0){185}}
-% \put(0,237){\makebox[185mm][c]{\raisebox{2\depth}{\Large {Лист регистрации изменений}}}}
-% \put(0,232){\makebox[88mm][c]{\raisebox{1.5\depth}{\small Номера листов (страниц)}}}
-% \put(0.5,227){\parbox[t]{7mm}{\small Изм}}
-% \put(9,227){\parbox[t]{18mm}{\small из\-ме\-нён\-ных}}
-% \put(29,227){\parbox[t]{18mm}{\small за\-ме\-нён\-ных}}
-% \put(49,227){\parbox[t]{18mm}{\small но\-вых}}
-% \put(69,227){\parbox[t]{18mm}{\small ан\-ну\-ли\-ро\-ван\-ных}}
-% \put(89,232){\parbox[t]{18mm}{\small Всего листов (страниц) в докум}}
-% \put(109,232){\parbox[t]{23mm}{\small {№} документа}}
-% \put(134,232){\parbox[t]{23mm}{\small Входящий {№} сопроводительного докум и дата}}
-% \put(159,232){\parbox[t]{13mm}{\small Подп.}}
-% \put(174,232){\parbox[t]{10mm}{\small Дата}}
-\label{enddoc}
-% \addcontentsline{toc}{section}{Лист регистрации изменений}
-% \end{picture}
-% \newpage
-}}
+\newcommand\UspdChangesList{
+<%= render partial: 'export/changesList' %>
+}
 
 \makeatletter
 \newcommand\agreed[2]{\def\@agreed{\signature{СОГЛАСОВАНО}{#1}{#2}}}
@@ -219,9 +135,14 @@ ref=см. пункт \arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enu
 \newcommand{\organizationunit}[1]{\def\@organizationunit{#1}}
 \newcommand{\organizationlocation}[1]{\def\@organizationlocation{#1}}
 \newenvironment{uspd}[1]{
+\renewcommand{\rightmark}{#1}
 \sloppy
+<% if @document.has_approvepage %>
 \UspdApprovalPage{#1}
+<% end %>
+<% if @document.has_titlepage %>
 \UspdTitlePage{#1}
+<% end %>
 \headheight=15mm
 <% if @document.has_annotation %>
 \section*{АННОТАЦИЯ}{\@abstracts}\newpage

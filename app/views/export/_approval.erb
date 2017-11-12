@@ -1,0 +1,36 @@
+\thispagestyle{uspdhead}\editbox{
+<% if @info.special_mark.present? %>
+\noindent\begin{picture}(0,0)
+\put(100, 10){\makebox[70mm][r]{
+<%= latex @info.special_mark %>
+}}
+\end{picture}
+<% end %>
+\begin{center}
+\textbf{\@organization} \\
+\@organizationunit \\
+
+\makebox[\linewidth]{\@agreed\@approved}
+\vskip 3em
+\makeatletter
+\large\textbf{\@project}
+\vskip 1em
+\large\textbf{\@title}
+\makeatother
+\vskip 1.5em
+{\large \textbf{ЛИСТ УТВЕРЖДЕНИЯ}}
+\vskip 1em
+\textbf{{{#1} 01-1-ЛУ}}
+\textbf{\pagesfield{endlu}}
+\vskip 1em
+\begin{flushright}
+\@performer
+\end{flushright}
+
+\end{center}
+\label{endlu}
+}
+
+
+\pagestyle{uspd}
+\newpage
