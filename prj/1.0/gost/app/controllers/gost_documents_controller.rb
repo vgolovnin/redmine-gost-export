@@ -1,8 +1,8 @@
 class GostDocumentsController < GostPluginController
   menu_item :gost_documents
 
-  rescue_from (Errno::ENOENT) do |e|
-    flash[:error] = "Не удалось запустить latex-сборку"
+  rescue_from (Errno::ENOENT) do |_|
+    flash[:error] = 'Не удалось запустить latex-сборку'
     redirect_to :back
   end
 
@@ -46,7 +46,7 @@ class GostDocumentsController < GostPluginController
   def update
     @document = @project.gost_documents.find(params[:id])
     @document.update(params.require(:gost_document).permit!)
-    @document.save || flash[:error] = 'Not saved'
+    @document.save || (flash[:error] = 'Not saved')
     redirect_to action: 'index'
   end
 
@@ -55,7 +55,7 @@ class GostDocumentsController < GostPluginController
     @info = @project.gost_info
     @bibs = GostBibliographicReference.get @project
     if @info.nil? or not Signer.all_set_for_project(@project)
-      flash[:error] = "Не задана информация о проекте"
+      flash[:error] = 'Не задана информация о проекте'
       redirect_to action: 'index'
     else
 
