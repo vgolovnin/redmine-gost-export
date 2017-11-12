@@ -3,6 +3,9 @@ class GostDocument < ActiveRecord::Base
   has_many :sections, as: :parent, dependent: :destroy
   accepts_nested_attributes_for :sections, allow_destroy: true
 
+  
+  validates_presence_of :title
+
 
   def nested_section(id)
     section = Section.find(id)

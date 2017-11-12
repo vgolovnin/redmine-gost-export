@@ -10,6 +10,7 @@
 \usepackage{sectsty}
 \usepackage{enumitem}
 \usepackage{caption}
+\usepackage{cleveref}
 \usepackage[normalem]{ulem}
 \usepackage[section, numbib, numindex]{tocbibind}
 
@@ -54,10 +55,12 @@
 \renewcommand\section{\newpage\stdsection}
 \sectionfont{\centering\large\MakeUppercase}
 
-\renewcommand{\labelenumi}{\arabic{enumi})}
-\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii})}
-\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii})}
-\renewcommand{\labelenumiv}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv})}
+\setlist[enumerate,1]{label=\arabic{enumi}),ref=см. пункт \arabic{enumi})}
+\setlist[enumerate,2]{label=\arabic{enumi}.\arabic{enumii}),ref=см. пункт \arabic{enumi}.\arabic{enumii}}
+\setlist[enumerate,3]{label=\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}),
+ref=см. пункт \arabic{enumi}.\arabic{enumii}.\arabic{enumiii}}
+\setlist[enumerate,4]{label=\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}),
+ref=см. пункт \arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
 
 \newcommand\editboxm[1]{
 \begin{tabular}{|c|c|c|c|c|}
@@ -109,12 +112,10 @@
 \end{center}
 }}
 
-\newcommand\UspdApprovalPage[1]{\thispagestyle{uspdhead}\editbox{
-<% if @info.special_mark.present? %>
-\noindent\begin{picture}(0,0)
-\put(100, 10){\makebox[70mm][r]{<%= latex @info.special_mark %>}}
-\end{picture}
-<% end %>
+\newcommand\UspdApprovalPage[1]{
+% if @document.has_approval_page
+\thispagestyle{uspdhead}
+\editbox{
 \begin{center}
 \textbf{\@organization} \\
 \@organizationunit \\
@@ -141,7 +142,12 @@
 }
 
 \newcommand\UspdTitlePage[1]{{\setcounter{page}{1}\thispagestyle{uspdhead}\editbox{
-
+\makeatletter
+<% if @info.special_mark.present? %>
+\noindent\begin{picture}(0,0)
+\put(100, 10){\makebox[70mm][r]{<%= latex @info.special_mark %>}}
+\end{picture}
+<% end %>
 {УТВЕРЖДЕНО}
 
 {{#1} 01-1-ЛУ}
@@ -165,41 +171,41 @@
 }
 
 \newcommand\UspdChangesList{{
-\newpage
-\noindent\begin{picture}(185,247)(0,0)
-\put(0,0){\line(0,1){247}}
-\put(8,0){\line(0,1){232}}
-\put(28,0){\line(0,1){232}}
-\put(48,0){\line(0,1){232}}
-\put(68,0){\line(0,1){232}}
-\put(88,0){\line(0,1){237}}
-\put(108,0){\line(0,1){237}}
-\put(133,0){\line(0,1){237}}
-\put(158,0){\line(0,1){237}}
-\put(173,0){\line(0,1){237}}
-\put(185,0){\line(0,1){247}}
-\put(0,247){\line(1,0){185}}
-\put(0,237){\line(1,0){185}}
-\put(0,232){\line(1,0){88}}
-\put(0,212){\line(1,0){185}}
-\put(0,0){\line(1,0){185}}
-\multiput(0,207)(0,-5){41}{\line(1,0){185}}
-\put(0,237){\makebox[185mm][c]{\raisebox{2\depth}{\Large {Лист регистрации изменений}}}}
-\put(0,232){\makebox[88mm][c]{\raisebox{1.5\depth}{\small Номера листов (страниц)}}}
-\put(0.5,227){\parbox[t]{7mm}{\small Изм}}
-\put(9,227){\parbox[t]{18mm}{\small из\-ме\-нён\-ных}}
-\put(29,227){\parbox[t]{18mm}{\small за\-ме\-нён\-ных}}
-\put(49,227){\parbox[t]{18mm}{\small но\-вых}}
-\put(69,227){\parbox[t]{18mm}{\small ан\-ну\-ли\-ро\-ван\-ных}}
-\put(89,232){\parbox[t]{18mm}{\small Всего листов (страниц) в докум}}
-\put(109,232){\parbox[t]{23mm}{\small {№} документа}}
-\put(134,232){\parbox[t]{23mm}{\small Входящий {№} сопроводительного докум и дата}}
-\put(159,232){\parbox[t]{13mm}{\small Подп.}}
-\put(174,232){\parbox[t]{10mm}{\small Дата}}
+% \newpage
+% \noindent\begin{picture}(185,247)(0,0)
+% \put(0,0){\line(0,1){247}}
+% \put(8,0){\line(0,1){232}}
+% \put(28,0){\line(0,1){232}}
+% \put(48,0){\line(0,1){232}}
+% \put(68,0){\line(0,1){232}}
+% \put(88,0){\line(0,1){237}}
+% \put(108,0){\line(0,1){237}}
+% \put(133,0){\line(0,1){237}}
+% \put(158,0){\line(0,1){237}}
+% \put(173,0){\line(0,1){237}}
+% \put(185,0){\line(0,1){247}}
+% \put(0,247){\line(1,0){185}}
+% \put(0,237){\line(1,0){185}}
+% \put(0,232){\line(1,0){88}}
+% \put(0,212){\line(1,0){185}}
+% \put(0,0){\line(1,0){185}}
+% \multiput(0,207)(0,-5){41}{\line(1,0){185}}
+% \put(0,237){\makebox[185mm][c]{\raisebox{2\depth}{\Large {Лист регистрации изменений}}}}
+% \put(0,232){\makebox[88mm][c]{\raisebox{1.5\depth}{\small Номера листов (страниц)}}}
+% \put(0.5,227){\parbox[t]{7mm}{\small Изм}}
+% \put(9,227){\parbox[t]{18mm}{\small из\-ме\-нён\-ных}}
+% \put(29,227){\parbox[t]{18mm}{\small за\-ме\-нён\-ных}}
+% \put(49,227){\parbox[t]{18mm}{\small но\-вых}}
+% \put(69,227){\parbox[t]{18mm}{\small ан\-ну\-ли\-ро\-ван\-ных}}
+% \put(89,232){\parbox[t]{18mm}{\small Всего листов (страниц) в докум}}
+% \put(109,232){\parbox[t]{23mm}{\small {№} документа}}
+% \put(134,232){\parbox[t]{23mm}{\small Входящий {№} сопроводительного докум и дата}}
+% \put(159,232){\parbox[t]{13mm}{\small Подп.}}
+% \put(174,232){\parbox[t]{10mm}{\small Дата}}
 \label{enddoc}
-\addcontentsline{toc}{section}{Лист регистрации изменений}
-\end{picture}
-\newpage
+% \addcontentsline{toc}{section}{Лист регистрации изменений}
+% \end{picture}
+% \newpage
 }}
 
 \makeatletter
@@ -212,7 +218,10 @@
 \newcommand{\organization}[1]{\def\@organization{#1}}
 \newcommand{\organizationunit}[1]{\def\@organizationunit{#1}}
 \newcommand{\organizationlocation}[1]{\def\@organizationlocation{#1}}
-\newenvironment{uspd}[1]{\sloppy\UspdApprovalPage{#1}\UspdTitlePage{#1}
+\newenvironment{uspd}[1]{
+\sloppy
+\UspdApprovalPage{#1}
+\UspdTitlePage{#1}
 \headheight=15mm
 <% if @document.has_annotation %>
 \section*{АННОТАЦИЯ}{\@abstracts}\newpage
@@ -243,6 +252,7 @@ extendedchars=false,
 keepspaces = true
 }
 
+\selectlanguage{russian}
 \setdefaultlanguage{russian}
 \PolyglossiaSetup{russian}{indentfirst=true}
 \setotherlanguages{english}
@@ -259,6 +269,7 @@ keepspaces = true
 agreed = @info.signers.agreed
 approved = @info.signers.approved
 performer = @info.signers.performer
+version = "04"
 %>
 \agreed{<%= latex agreed.position %>}{<%= latex agreed.name %>}
 \approved{<%= latex approved.position %>}{<%= latex approved.name %>}
@@ -266,12 +277,14 @@ performer = @info.signers.performer
 \title{<%= latex @document.title %>}
 \hypersetup{pdftitle={<%= latex "#{@info.title}. #{@document.title}" %>}}
 
-\begin{uspd}{<%= latex "#{@info.country_code}.#{@info.organization_code}.#{@info.okp_code}-01 #{@document.document_code}" %>}
+\begin{uspd}{<%= latex "#{@info.country_code}.#{@info.organization_code}.#{@info.okp_code}-#{version} #{@document.document_code}" %>}
 
 <% pwd = Dir.pwd %>
 <%= render partial: 'export/sections', locals: {sections: @document.sections.main, level: 1, pwd: @directory} %>
 <% Dir.chdir pwd %>
-<% if @document.has_bibliography %>\bibliography{uspd}<% end %>
+<% if @document.has_bibliography %>
+\bibliography{uspd}
+<% end %>
 
 <% if @document.sections.appendixes.any? %>
 \let\section\stdsection

@@ -95,7 +95,6 @@ class LatexBuild
        output << "\\end{table}"
        output
      end
-
    end
 
    module GostLatexExtension
@@ -103,7 +102,7 @@ class LatexBuild
 
      [:cite, :ref, :label].each do |command|
         define_method(command) do |text|
-          text.gsub! /\{\{#{command}\((.*?)\)\}\}/, "==~\\#{command}{\\1}=="
+          text.gsub!(/\{\{#{command}\((.*?)\)\}\}/, "==\\#{command}{\\1}==")
           end
      end
 
